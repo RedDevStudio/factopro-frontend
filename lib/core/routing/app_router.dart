@@ -1,4 +1,4 @@
-import 'package:factopro/features/authentication/view/auth_screen.dart';
+import 'package:factopro/features/authentication/view/user_store_registration.dart';
 import 'package:factopro/features/onboarding/view/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
