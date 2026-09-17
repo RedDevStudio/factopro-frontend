@@ -1,9 +1,11 @@
 import 'package:factopro/core/common_widgets/primary_button.dart';
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/authentication/widgets/custom_text_field.dart';
 import 'package:factopro/features/authentication/widgets/logo_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -137,11 +139,13 @@ class AuthScreen extends StatelessWidget {
             child: Column(
               children: [
                 PrimaryButton(
-                  onTap: () {},
+                  onTap: () {
+                    context.goNamed(AppRoute.settings.name);
+                  },
                   labelText: "ثبت و راه‌اندازی فروشگاه",
                   icon: Icons.arrow_back,
                 ),
-                Text("با ثبت فروشگاه، قوانین و حریم خصوصی سامانه را میپذیرید۔")
+                Text("با ثبت فروشگاه، قوانین و حریم خصوصی سامانه را میپذیرید۔"),
               ],
             ),
           ),

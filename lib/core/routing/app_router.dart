@@ -1,11 +1,15 @@
 import 'package:factopro/features/authentication/view/user_store_registration.dart';
+import 'package:factopro/features/dashboard/view/dashboard_screen.dart';
 import 'package:factopro/features/onboarding/view/onboarding_screen.dart';
+import 'package:factopro/features/settings/view/settings_screen.dart';
 import 'package:go_router/go_router.dart';
 
 enum AppRoute {
   splash,
   onboarding,
   auth,
+  settings,
+  dashboard,
 }
 
 final router = GoRouter(
@@ -25,6 +29,16 @@ final router = GoRouter(
       path: '/auth',
       name: AppRoute.auth.name,
       builder: (context, state) => AuthScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      name: AppRoute.settings.name,
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/dashboard',
+      name: AppRoute.dashboard.name,
+      builder: (context, state) => const DashboardScreen(),
     ),
   ],
 );
