@@ -140,7 +140,7 @@ class AuthScreen extends StatelessWidget {
               children: [
                 PrimaryButton(
                   onTap: () {
-                    context.goNamed(AppRoute.settings.name);
+                    context.goNamed(AppRoute.dashboard.name);
                   },
                   labelText: "ثبت و راه‌اندازی فروشگاه",
                   icon: Icons.arrow_back,

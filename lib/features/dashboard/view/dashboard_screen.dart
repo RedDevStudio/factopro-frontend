@@ -1,7 +1,6 @@
 import 'package:factopro/core/common_widgets/primary_button.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/dashboard/bloc/dashboard_bloc.dart';
-import 'package:factopro/features/dashboard/widgets/dashboard_bottom_nav_bar.dart';
 import 'package:factopro/features/dashboard/widgets/dashboard_header.dart';
 import 'package:factopro/features/dashboard/widgets/dashboard_stats_row.dart';
 import 'package:factopro/features/dashboard/widgets/quick_access_section.dart';
@@ -33,14 +32,9 @@ class _DashboardView extends StatelessWidget {
 
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
-        final bloc = context.read<DashboardBloc>();
 
         return Scaffold(
           backgroundColor: colorScheme.outlineVariant,
-          bottomNavigationBar: DashboardBottomNavBar(
-            selectedItem: state.selectedNavItem,
-            onItemSelected: (item) => bloc.add(DashboardNavItemSelected(item)),
-          ),
           body: SafeArea(
             bottom: false,
             child: Center(
