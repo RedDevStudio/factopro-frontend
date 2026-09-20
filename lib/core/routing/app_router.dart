@@ -3,6 +3,7 @@ import 'package:factopro/features/authentication/view/user_store_registration.da
 import 'package:factopro/features/dashboard/view/dashboard_screen.dart';
 import 'package:factopro/features/invoices/view/invoices_screen.dart';
 import 'package:factopro/features/onboarding/view/onboarding_screen.dart';
+import 'package:factopro/features/products/view/products_screen.dart';
 import 'package:factopro/features/settings/view/settings_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -64,7 +65,7 @@ final router = GoRouter(
             GoRoute(
               path: '/products',
               name: AppRoute.products.name,
-              builder: (context, state) => const DashboardScreen(),
+              builder: (context, state) => const ProductsScreen(),
             ),
           ],
         ),
