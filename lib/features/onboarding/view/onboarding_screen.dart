@@ -101,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         curve: Curves.easeInOut,
                       );
                     } else {
-                      context.pushNamed(AppRoute.auth.name);
+                      context.pushNamed(AppRoute.userStoreRegistration.name);
                     }
                   },
                   backgroundColor: context.colorScheme.onPrimaryContainer,

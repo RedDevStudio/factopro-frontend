@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 enum AppRoute {
   splash,
   onboarding,
-  auth,
+  userStoreRegistration,
   settings,
   invoices,
   products,
@@ -31,9 +31,9 @@ final router = GoRouter(
       builder: (context, state) => OnboardingScreen(),
     ),
     GoRoute(
-      path: '/auth',
-      name: AppRoute.auth.name,
-      builder: (context, state) => AuthScreen(),
+      path: '/user-store-registration',
+      name: AppRoute.userStoreRegistration.name,
+      builder: (context, state) => UserStoreRegistration(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
