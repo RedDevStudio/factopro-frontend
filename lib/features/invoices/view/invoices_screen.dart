@@ -1,3 +1,4 @@
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/invoices/widgets/invoice_card.dart';
 import 'package:factopro/features/invoices/widgets/invoice_card_data.dart';
@@ -8,6 +9,7 @@ import 'package:factopro/features/invoices/widgets/invoices_sales_report_card.da
 import 'package:factopro/features/invoices/widgets/invoices_toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class InvoicesScreen extends StatefulWidget {
   const InvoicesScreen({super.key});
@@ -176,7 +178,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const InvoicesHeader(storeName: 'فروشگاه مرکزی • پایانه ۱'),
+                  InvoicesHeader(
+                    storeName: 'فروشگاه مرکزی • پایانه ۱',
+                    onNotificationsTap: () => context.pushNamed(AppRoute.notifications.name),
+                  ),
                   const Gap(16),
                   const InvoicesSalesReportCard(
                     dateLabel: 'گزارش فروش امروز (۲۴ آبان)',

@@ -4,6 +4,7 @@ import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/onboarding/widgets/page_view_item.dart';
 import 'package:factopro/resources/resources.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -34,11 +35,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Spacer(),
             Text("اعتماد پرو", style: TextStyle(fontWeight: FontWeight.bold)),
+            Gap(6),
             Image.asset(Images.splashAppbarLogo),
           ],
         ),
         leading: ElevatedButton(
           onPressed: () {},
+          style: ButtonStyle(
+            side: WidgetStatePropertyAll(BorderSide())
+          ),
           child: Text(
             'رد کردن',
             style: TextStyle(color: context.colorScheme.onSurface),

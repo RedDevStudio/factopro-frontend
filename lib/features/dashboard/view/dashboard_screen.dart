@@ -1,4 +1,5 @@
 import 'package:factopro/core/common_widgets/primary_button.dart';
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:factopro/features/dashboard/widgets/dashboard_header.dart';
@@ -9,6 +10,7 @@ import 'package:factopro/features/dashboard/widgets/sales_summary_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -45,7 +47,11 @@ class _DashboardView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      DashboardHeader(dateLabel: state.dateLabel),
+                      DashboardHeader(
+                        dateLabel: state.dateLabel,
+                        onNotificationsTap: () =>
+                            context.pushNamed(AppRoute.notifications.name),
+                      ),
                       const Gap(16),
                       PrimaryButton(
                         onTap: () {},

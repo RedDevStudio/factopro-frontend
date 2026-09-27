@@ -2,6 +2,7 @@ import 'package:factopro/core/routing/scaffold_with_nested_navigation.dart';
 import 'package:factopro/features/authentication/view/user_store_registration.dart';
 import 'package:factopro/features/dashboard/view/dashboard_screen.dart';
 import 'package:factopro/features/invoices/view/invoices_screen.dart';
+import 'package:factopro/features/notifications/view/notifications_screen.dart';
 import 'package:factopro/features/onboarding/view/onboarding_screen.dart';
 import 'package:factopro/features/products/view/products_screen.dart';
 import 'package:factopro/features/settings/view/settings_screen.dart';
@@ -15,6 +16,7 @@ enum AppRoute {
   invoices,
   products,
   dashboard,
+  notifications,
 }
 
 final router = GoRouter(
@@ -34,6 +36,11 @@ final router = GoRouter(
       path: '/user-store-registration',
       name: AppRoute.userStoreRegistration.name,
       builder: (context, state) => UserStoreRegistration(),
+    ),
+    GoRoute(
+      path: '/notifications',
+      name: AppRoute.notifications.name,
+      builder: (context, state) => const NotificationsScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
