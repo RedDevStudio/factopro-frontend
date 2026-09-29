@@ -27,6 +27,7 @@ class _PageViewItemState extends State<PageViewItem> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Gap(35),
             Container(
               width: 300,
               height: 250,
@@ -73,7 +74,7 @@ class _PageViewItemState extends State<PageViewItem> {
                 ],
               ),
             ),
-            Gap(20),
+            Spacer(),
             Text(
               widget.title,
               textAlign: TextAlign.center,
@@ -86,6 +87,7 @@ class _PageViewItemState extends State<PageViewItem> {
               softWrap: true,
               textAlign: TextAlign.center,
             ),
+            Spacer(),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/dashboard/bloc/dashboard_models.dart';
-import 'package:factopro/features/dashboard/widgets/dashboard_warning_colors.dart';
+import 'package:factopro/features/dashboard/widgets/dashboard_accent_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -13,15 +13,7 @@ class QuickAccessItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
-    final (iconColor, backgroundColor) = switch (action.accentColor) {
-      DashboardAccentColor.primary => (colorScheme.primary, colorScheme.primaryContainer),
-      DashboardAccentColor.secondary => (colorScheme.secondary, colorScheme.secondaryContainer),
-      DashboardAccentColor.tertiary => (colorScheme.tertiary, colorScheme.tertiaryContainer),
-      DashboardAccentColor.warning => (
-        DashboardWarningColors.of(context),
-        DashboardWarningColors.containerOf(context),
-      ),
-    };
+    final (iconColor, backgroundColor) = action.accentColor.resolve(context);
 
     return InkWell(
       onTap: onTap,

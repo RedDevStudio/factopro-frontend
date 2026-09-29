@@ -57,6 +57,62 @@ final class DashboardState extends Equatable {
         status: InvoiceStatus.overdue,
       ),
     ],
+    this.managerName = 'علیرضا محمدی',
+    this.managerRole = 'مدیر ارشد فروشگاه',
+    this.managerInitials = 'ع‌م',
+    this.stores = const [
+      DashboardStore(
+        name: 'هایپرمارکت ساحل',
+        branchLabel: 'شعبه مرکزی',
+        icon: Icons.apartment_rounded,
+        isSelected: true,
+      ),
+      DashboardStore(
+        name: 'سوپرمارکت پارس',
+        branchLabel: 'شعبه غرب',
+        icon: Icons.home_outlined,
+      ),
+      DashboardStore(
+        name: 'فروشگاه آریا',
+        branchLabel: 'شعبه بازار',
+        icon: Icons.local_mall_outlined,
+      ),
+    ],
+    this.drawerLinks = const [
+      DashboardDrawerLink(
+        icon: Icons.description_outlined,
+        label: 'صدور فاکتور سریع',
+        accentColor: DashboardAccentColor.primary,
+      ),
+      DashboardDrawerLink(
+        icon: Icons.view_in_ar_outlined,
+        label: 'انبار و موجودی کالاها',
+        accentColor: DashboardAccentColor.secondary,
+        badgeLabel: 'نیاز به سفارش',
+        route: AppRoute.products,
+      ),
+      DashboardDrawerLink(
+        icon: Icons.people_alt_outlined,
+        label: 'حساب مشتریان و دفتر نسیه',
+        accentColor: DashboardAccentColor.violet,
+      ),
+      DashboardDrawerLink(
+        icon: Icons.bar_chart_rounded,
+        label: 'گزارشات سود و تراکنش‌های روزانه',
+        accentColor: DashboardAccentColor.tertiary,
+      ),
+      DashboardDrawerLink(
+        icon: Icons.receipt_long_outlined,
+        label: 'بستن صندوق و کارت‌خوان پوز',
+        accentColor: DashboardAccentColor.tertiary,
+      ),
+      DashboardDrawerLink(
+        icon: Icons.settings_outlined,
+        label: 'تنظیمات برنامه و قالب',
+        accentColor: DashboardAccentColor.neutral,
+        route: AppRoute.settings,
+      ),
+    ],
   });
 
   final DashboardNavItem selectedNavItem;
@@ -68,6 +124,11 @@ final class DashboardState extends Equatable {
   final String receivablesAmount;
   final List<QuickAccessAction> quickAccessActions;
   final List<DashboardInvoice> recentInvoices;
+  final String managerName;
+  final String managerRole;
+  final String managerInitials;
+  final List<DashboardStore> stores;
+  final List<DashboardDrawerLink> drawerLinks;
 
   DashboardState copyWith({DashboardNavItem? selectedNavItem}) {
     return DashboardState(
@@ -80,6 +141,11 @@ final class DashboardState extends Equatable {
       receivablesAmount: receivablesAmount,
       quickAccessActions: quickAccessActions,
       recentInvoices: recentInvoices,
+      managerName: managerName,
+      managerRole: managerRole,
+      managerInitials: managerInitials,
+      stores: stores,
+      drawerLinks: drawerLinks,
     );
   }
 
@@ -94,5 +160,10 @@ final class DashboardState extends Equatable {
     receivablesAmount,
     quickAccessActions,
     recentInvoices,
+    managerName,
+    managerRole,
+    managerInitials,
+    stores,
+    drawerLinks,
   ];
 }

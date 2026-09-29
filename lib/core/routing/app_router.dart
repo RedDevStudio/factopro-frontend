@@ -16,7 +16,7 @@ enum AppRoute {
   invoices,
   products,
   dashboard,
-  notifications,
+  notifications
 }
 
 final router = GoRouter(
@@ -40,7 +40,7 @@ final router = GoRouter(
     GoRoute(
       path: '/notifications',
       name: AppRoute.notifications.name,
-      builder: (context, state) => const NotificationsScreen(),
+      builder: (context, state) => NotificationsScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

@@ -2,6 +2,7 @@ import 'package:factopro/core/common_widgets/primary_button.dart';
 import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:factopro/features/dashboard/widgets/dashboard_drawer.dart';
 import 'package:factopro/features/dashboard/widgets/dashboard_header.dart';
 import 'package:factopro/features/dashboard/widgets/dashboard_stats_row.dart';
 import 'package:factopro/features/dashboard/widgets/quick_access_section.dart';
@@ -34,32 +35,51 @@ class _DashboardView extends StatelessWidget {
 
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
-
         return Scaffold(
           backgroundColor: colorScheme.outlineVariant,
+          drawerScrimColor: colorScheme.scrim,
+          endDrawer: DashboardDrawer(
+            managerName: state.managerName,
+            managerRole: state.managerRole,
+            managerInitials: state.managerInitials,
+            stores: state.stores,
+            links: state.drawerLinks,
+          ),
           body: SafeArea(
             bottom: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 480),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      DashboardHeader(
-                        dateLabel: state.dateLabel,
-                        onNotificationsTap: () =>
-                            context.pushNamed(AppRoute.notifications.name),
+                      Builder(
+                        builder: (context) => DashboardHeader(
+                          dateLabel: state.dateLabel,
+                          onNotificationsTap: () =>
+                              context.pushNamed(AppRoute.notifications.name),
+                          onMenuTap: () => Scaffold.of(context).openEndDrawer(),
+                        ),
                       ),
                       const Gap(16),
                       PrimaryButton(
                         onTap: () {},
                         labelText: 'صدور فاکتور جدید',
                         icon: Icons.add,
-                        backgroundColor: isDark ? colorScheme.primary : colorScheme.secondary,
-                        labelTextColor: isDark ? colorScheme.onPrimary : colorScheme.onSecondary,
-                        borderColor: isDark ? colorScheme.primary : colorScheme.secondary,
+                        backgroundColor: isDark
+                            ? colorScheme.primary
+                            : colorScheme.secondary,
+                        labelTextColor: isDark
+                            ? colorScheme.onPrimary
+                            : colorScheme.onSecondary,
+                        borderColor: isDark
+                            ? colorScheme.primary
+                            : colorScheme.secondary,
                       ),
                       const Gap(16),
                       SalesSummaryCard(

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:flutter/material.dart';
 
 enum DashboardNavItem {
@@ -41,6 +42,8 @@ enum DashboardAccentColor {
   secondary,
   tertiary,
   warning,
+  violet,
+  neutral,
 }
 
 final class QuickAccessAction extends Equatable {
@@ -84,4 +87,44 @@ final class DashboardInvoice extends Equatable {
     note,
     status,
   ];
+}
+
+final class DashboardStore extends Equatable {
+  const DashboardStore({
+    required this.name,
+    required this.branchLabel,
+    required this.icon,
+    this.isSelected = false,
+  });
+
+  final String name;
+  final String branchLabel;
+  final IconData icon;
+  final bool isSelected;
+
+  @override
+  List<Object?> get props => [name, branchLabel, icon, isSelected];
+}
+
+final class DashboardDrawerLink extends Equatable {
+  const DashboardDrawerLink({
+    required this.icon,
+    required this.label,
+    required this.accentColor,
+    this.badgeLabel,
+    this.route,
+  });
+
+  final IconData icon;
+  final String label;
+  final DashboardAccentColor accentColor;
+
+  /// Replaces the trailing chevron with a warning badge when set.
+  final String? badgeLabel;
+
+  /// Existing route this link opens; `null` for destinations not built yet.
+  final AppRoute? route;
+
+  @override
+  List<Object?> get props => [icon, label, accentColor, badgeLabel, route];
 }

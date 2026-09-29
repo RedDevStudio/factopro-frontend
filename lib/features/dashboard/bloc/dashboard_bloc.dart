@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/features/dashboard/bloc/dashboard_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
