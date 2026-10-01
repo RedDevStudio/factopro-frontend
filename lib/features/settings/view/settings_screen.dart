@@ -1,3 +1,4 @@
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/settings/bloc/settings_bloc.dart';
 import 'package:factopro/features/settings/widgets/display_mode_section.dart';
@@ -10,6 +11,7 @@ import 'package:factopro/features/settings/widgets/support_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -134,6 +136,8 @@ class _SettingsViewState extends State<_SettingsView> {
                   SubscriptionPromoCard(
                     daysLeft: state.subscriptionDaysLeft,
                     progress: state.subscriptionProgress,
+                    onRenewPressed: () =>
+                        context.pushNamed(AppRoute.subscription.name),
                   ),
                   const Gap(16),
                   DisplayModeSection(
