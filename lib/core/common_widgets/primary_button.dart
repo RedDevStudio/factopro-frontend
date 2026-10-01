@@ -12,6 +12,7 @@ class PrimaryButton extends StatelessWidget {
     this.borderColor,
     this.isLoading = false,
     this.icon,
+    this.labelFontSize = 20,
   });
 
   final VoidCallback onTap;
@@ -21,6 +22,7 @@ class PrimaryButton extends StatelessWidget {
   final Color? borderColor;
   final bool isLoading;
   final IconData? icon;
+  final double labelFontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +50,16 @@ class PrimaryButton extends StatelessWidget {
                       color: labelTextColor ?? context.colorScheme.primary,
                     ),
                   if (icon != null) Gap(6),
-                  Text(
-                    labelText,
-                    style: TextStyle(
-                      color: labelTextColor ?? context.colorScheme.primary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Text(
+                      labelText,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: labelTextColor ?? context.colorScheme.primary,
+                        fontSize: labelFontSize,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],

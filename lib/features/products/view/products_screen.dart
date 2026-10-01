@@ -1,3 +1,4 @@
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/products/widgets/product_card.dart';
 import 'package:factopro/features/products/widgets/product_card_data.dart';
@@ -8,6 +9,7 @@ import 'package:factopro/features/products/widgets/products_stats_row.dart';
 import 'package:factopro/features/products/widgets/products_toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -133,6 +135,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       product: _products[i],
                       isActive: _activeStates[i],
                       onActiveChanged: (value) => setState(() => _activeStates[i] = value),
+                      onEditTap: () => context.pushNamed(
+                        AppRoute.editProduct.name,
+                        extra: _products[i],
+                      ),
                     ),
                     if (i != _products.length - 1) const Gap(12),
                   ],

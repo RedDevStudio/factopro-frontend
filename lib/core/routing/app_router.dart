@@ -4,7 +4,9 @@ import 'package:factopro/features/dashboard/view/dashboard_screen.dart';
 import 'package:factopro/features/invoices/view/invoices_screen.dart';
 import 'package:factopro/features/notifications/view/notifications_screen.dart';
 import 'package:factopro/features/onboarding/view/onboarding_screen.dart';
+import 'package:factopro/features/products/view/edit_product_screen.dart';
 import 'package:factopro/features/products/view/products_screen.dart';
+import 'package:factopro/features/products/widgets/product_card_data.dart';
 import 'package:factopro/features/settings/view/settings_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +18,8 @@ enum AppRoute {
   invoices,
   products,
   dashboard,
-  notifications
+  notifications,
+  editProduct
 }
 
 final router = GoRouter(
@@ -41,6 +44,11 @@ final router = GoRouter(
       path: '/notifications',
       name: AppRoute.notifications.name,
       builder: (context, state) => NotificationsScreen(),
+    ),
+    GoRoute(
+      path: '/edit-product',
+      name: AppRoute.editProduct.name,
+      builder: (context, state) => EditProductScreen(product: state.extra as ProductCardData?),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
