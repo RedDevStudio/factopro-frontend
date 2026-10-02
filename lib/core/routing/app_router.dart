@@ -8,6 +8,8 @@ import 'package:factopro/features/products/view/edit_product_screen.dart';
 import 'package:factopro/features/products/view/products_screen.dart';
 import 'package:factopro/features/products/widgets/product_card_data.dart';
 import 'package:factopro/features/settings/view/settings_screen.dart';
+import 'package:factopro/features/subscription/view/subscription_payment_history_screen.dart';
+import 'package:factopro/features/subscription/view/subscription_payment_success_screen.dart';
 import 'package:factopro/features/subscription/view/subscription_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,7 +23,9 @@ enum AppRoute {
   dashboard,
   notifications,
   editProduct,
-  subscription
+  subscription,
+  subscriptionPaymentSuccess,
+  subscriptionPaymentHistory,
 }
 
 final router = GoRouter(
@@ -50,12 +54,23 @@ final router = GoRouter(
     GoRoute(
       path: '/edit-product',
       name: AppRoute.editProduct.name,
-      builder: (context, state) => EditProductScreen(product: state.extra as ProductCardData?),
+      builder: (context, state) =>
+          EditProductScreen(product: state.extra as ProductCardData?),
     ),
     GoRoute(
       path: '/subscription',
       name: AppRoute.subscription.name,
       builder: (context, state) => const SubscriptionScreen(),
+    ),
+    GoRoute(
+      path: '/subscription-payment-success',
+      name: AppRoute.subscriptionPaymentSuccess.name,
+      builder: (context, state) => const SubscriptionPaymentSuccessScreen(),
+    ),
+    GoRoute(
+      path: '/subscription-payment-history',
+      name: AppRoute.subscriptionPaymentHistory.name,
+      builder: (context, state) => const SubscriptionPaymentHistoryScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

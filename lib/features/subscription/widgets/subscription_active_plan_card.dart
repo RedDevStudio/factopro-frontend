@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 /// "اشتراک فعال شما" card: plan medal and name on the start (right) side,
-/// remaining-days pill on the end (left) side. Expects an RTL
-/// [Directionality] ancestor.
+/// remaining-days pill on the end (left) side. Tapping it opens [onTap]
+/// (the payment history). Expects an RTL [Directionality] ancestor.
 class SubscriptionActivePlanCard extends StatelessWidget {
   const SubscriptionActivePlanCard({
     super.key,
     required this.planName,
     required this.remainingLabel,
+    this.onTap,
   });
+
+  final VoidCallback? onTap;
 
   /// e.g. "نسخه آزمایشی پرو".
   final String planName;
@@ -24,7 +27,7 @@ class SubscriptionActivePlanCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
 
-    return SubscriptionSectionCard(
+    final card = SubscriptionSectionCard(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
@@ -97,6 +100,13 @@ class SubscriptionActivePlanCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+
+    if (onTap == null) return card;
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: card,
     );
   }
 }

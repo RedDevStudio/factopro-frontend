@@ -2,17 +2,19 @@ import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/subscription/widgets/subscription_colors.dart';
 import 'package:flutter/material.dart';
 
-/// Pinned top bar of the subscription screen: back chevron and the
-/// "ارتقا و تمدید اشتراک" title on the start (right) side, help and profile
-/// avatar on the end (left) side. Expects an RTL [Directionality] ancestor.
+/// Pinned top bar of the subscription screens: back chevron and the [title]
+/// on the start (right) side, help and profile avatar on the end (left) side.
+/// Expects an RTL [Directionality] ancestor.
 class SubscriptionHeader extends StatelessWidget {
   const SubscriptionHeader({
     super.key,
+    this.title = 'ارتقا و تمدید اشتراک',
     this.onBackTap,
     this.onHelpTap,
     this.onAvatarTap,
   });
 
+  final String title;
   final VoidCallback? onBackTap;
   final VoidCallback? onHelpTap;
   final VoidCallback? onAvatarTap;
@@ -45,7 +47,7 @@ class SubscriptionHeader extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'ارتقا و تمدید اشتراک',
+              title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

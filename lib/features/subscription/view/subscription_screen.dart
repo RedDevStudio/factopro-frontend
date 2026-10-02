@@ -1,12 +1,12 @@
-import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/features/subscription/widgets/subscription_active_plan_card.dart';
 import 'package:factopro/features/subscription/widgets/subscription_billing_period_selector.dart';
 import 'package:factopro/features/subscription/widgets/subscription_checkout_bar.dart';
 import 'package:factopro/features/subscription/widgets/subscription_coupon_card.dart';
 import 'package:factopro/features/subscription/widgets/subscription_data.dart';
 import 'package:factopro/features/subscription/widgets/subscription_gateway_section.dart';
-import 'package:factopro/features/subscription/widgets/subscription_header.dart';
 import 'package:factopro/features/subscription/widgets/subscription_invoice_summary_card.dart';
+import 'package:factopro/features/subscription/widgets/subscription_page_layout.dart';
 import 'package:factopro/features/subscription/widgets/subscription_plan_card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -152,94 +152,59 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     super.dispose();
   }
 
-  void _close() {
-    if (context.canPop()) context.pop();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final colorScheme = context.colorScheme;
-
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: colorScheme.outlineVariant,
-        body: SafeArea(
-          bottom: false,
-          child: Column(
-            children: [
-              SubscriptionHeader(onBackTap: _close),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 480),
-                    child: SingleChildScrollView(
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 14,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const SubscriptionActivePlanCard(
-                            planName: 'نسخه آزمایشی پرو',
-                            remainingLabel: '۷۴ روز باقی‌مانده',
-                          ),
-                          const Gap(24),
-                          SubscriptionBillingPeriodSelector(
-                            periods: _periods,
-                            selectedIndex: _selectedPeriodIndex,
-                            onSelected: (index) =>
-                                setState(() => _selectedPeriodIndex = index),
-                          ),
-                          const Gap(24),
-                          for (var i = 0; i < _plans.length; i++) ...[
-                            SubscriptionPlanCard(
-                              plan: _plans[i],
-                              isSelected: i == _selectedPlanIndex,
-                              onSelect: _plans[i].isCurrent
-                                  ? null
-                                  : () =>
-                                        setState(() => _selectedPlanIndex = i),
-                            ),
-                            const Gap(16),
-                          ],
-                          const Gap(8),
-                          SubscriptionCouponCard(
-                            controller: _couponController,
-                            successMessage:
-                                'کد تخفیف نوروز با موفقیت ۱۵٪ کسر گردید.',
-                          ),
-                          const Gap(24),
-                          SubscriptionGatewaySection(
-                            gateways: _gateways,
-                            selectedIndex: _selectedGatewayIndex,
-                            onSelected: (index) =>
-                                setState(() => _selectedGatewayIndex = index),
-                          ),
-                          const Gap(24),
-                          const SubscriptionInvoiceSummaryCard(
-                            lines: _invoiceLines,
-                            totalValue: '۳,۸۱۲,۴۷۴',
-                            renewalNote: 'تمدید خودکار فعال نمی‌باشد',
-                          ),
-                          const Gap(20),
-                          const SubscriptionTrustRow(),
-                          const Gap(8),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SubscriptionCheckoutBar(),
-            ],
-          ),
-        ),
+    return SubscriptionPageLayout(
+      title: 'ارتقا و تمدید اشتراک',
+      bottomBar: SubscriptionCheckoutBar(
+        onPayTap: () =>
+            context.pushNamed(AppRoute.subscriptionPaymentSuccess.name),
       ),
+      children: [
+        SubscriptionActivePlanCard(
+          planName: 'نسخه آزمایشی پرو',
+          remainingLabel: '۷۴ روز باقی‌مانده',
+          onTap: () =>
+              context.pushNamed(AppRoute.subscriptionPaymentHistory.name),
+        ),
+        const Gap(24),
+        SubscriptionBillingPeriodSelector(
+          periods: _periods,
+          selectedIndex: _selectedPeriodIndex,
+          onSelected: (index) => setState(() => _selectedPeriodIndex = index),
+        ),
+        const Gap(24),
+        for (var i = 0; i < _plans.length; i++) ...[
+          SubscriptionPlanCard(
+            plan: _plans[i],
+            isSelected: i == _selectedPlanIndex,
+            onSelect: _plans[i].isCurrent
+                ? null
+                : () => setState(() => _selectedPlanIndex = i),
+          ),
+          const Gap(16),
+        ],
+        const Gap(8),
+        SubscriptionCouponCard(
+          controller: _couponController,
+          successMessage: 'کد تخفیف نوروز با موفقیت ۱۵٪ کسر گردید.',
+        ),
+        const Gap(24),
+        SubscriptionGatewaySection(
+          gateways: _gateways,
+          selectedIndex: _selectedGatewayIndex,
+          onSelected: (index) => setState(() => _selectedGatewayIndex = index),
+        ),
+        const Gap(24),
+        const SubscriptionInvoiceSummaryCard(
+          lines: _invoiceLines,
+          totalValue: '۳,۸۱۲,۴۷۴',
+          renewalNote: 'تمدید خودکار فعال نمی‌باشد',
+        ),
+        const Gap(20),
+        const SubscriptionTrustRow(),
+        const Gap(8),
+      ],
     );
   }
 }

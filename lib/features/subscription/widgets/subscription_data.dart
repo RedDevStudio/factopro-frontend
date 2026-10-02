@@ -107,3 +107,101 @@ class SubscriptionInvoiceLineData {
   /// Discount lines are shown in the success color.
   final bool isDiscount;
 }
+
+/// A label/value row of the electronic payment receipt.
+class SubscriptionReceiptDetailData {
+  const SubscriptionReceiptDetailData({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.isHighlighted = false,
+    this.isCopyable = false,
+    this.isLtr = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  /// Codes and card numbers that read left-to-right.
+  final bool isLtr;
+
+  /// Shown in the success color, e.g. the new period's validity.
+  final bool isHighlighted;
+
+  /// Shows a copy icon next to the value, e.g. the Shaparak tracking code.
+  final bool isCopyable;
+}
+
+/// A feature card of the "امکانات ویژه آنلاک‌شده" section.
+class SubscriptionUnlockedFeatureData {
+  const SubscriptionUnlockedFeatureData({
+    required this.icon,
+    required this.title,
+    required this.description,
+    this.badgeLabel,
+    this.isGift = false,
+  });
+
+  final IconData icon;
+  final String title;
+  final String description;
+
+  /// Small pill after the title, e.g. "هدیه تمدید".
+  final String? badgeLabel;
+
+  /// Gift features use the amber icon tile.
+  final bool isGift;
+}
+
+/// Outcome of a subscription payment.
+enum SubscriptionTransactionStatus { successful, failed }
+
+/// A card of the subscription payment history list.
+class SubscriptionTransactionData {
+  const SubscriptionTransactionData({
+    required this.title,
+    required this.dateLabel,
+    required this.timeLabel,
+    required this.amount,
+    required this.status,
+    this.gatewayName,
+    this.gatewayIcon = Icons.credit_card_rounded,
+    this.trackingCode,
+    this.failureReason,
+    this.failureBadgeLabel,
+    this.failureNote,
+    this.hasPdfReceipt = false,
+  });
+
+  final String title;
+
+  /// e.g. "۲۴ آبان ۱۴۰۳".
+  final String dateLabel;
+
+  /// e.g. "ساعت ۱۴:۳۵".
+  final String timeLabel;
+
+  /// e.g. "۴,۸۵۰,۰۰۰".
+  final String amount;
+  final SubscriptionTransactionStatus status;
+
+  final String? gatewayName;
+  final IconData gatewayIcon;
+  final String? trackingCode;
+
+  /// e.g. "عدم پاسخ بانک (برگشت خورده)".
+  final String? failureReason;
+
+  /// e.g. "برگشت به حساب مبدا".
+  final String? failureBadgeLabel;
+
+  /// e.g. "مبلغ ظرف ۲۴ تا ۷۲ ساعت عودت شده است".
+  final String? failureNote;
+
+  /// The latest payment offers a PDF receipt next to a filled
+  /// "مشاهده فاکتور" button.
+  final bool hasPdfReceipt;
+
+  bool get isSuccessful => status == SubscriptionTransactionStatus.successful;
+}
