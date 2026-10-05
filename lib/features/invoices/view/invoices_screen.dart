@@ -205,7 +205,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                     if (invoice != _invoices.last) const Gap(12),
                   ],
                   const Gap(20),
-                  InvoicesBottomBar(),
+                  InvoicesBottomBar(
+                    onNewInvoiceTap: () => context.pushNamed(AppRoute.invoiceIssue.name),
+                  ),
                   const Gap(16),
                 ],
               ),

@@ -30,6 +30,7 @@ InputDecoration editProductInputDecoration(
   BuildContext context, {
   Widget? suffix,
   Color? accentColor,
+  String? hintText,
 }) {
   final colorScheme = context.colorScheme;
   final borderColor =
@@ -43,6 +44,8 @@ InputDecoration editProductInputDecoration(
 
   return InputDecoration(
     isDense: true,
+    hintText: hintText,
+    hintStyle: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
     filled: true,
     fillColor:
         accentColor?.withValues(alpha: 0.1) ?? colorScheme.outlineVariant,
@@ -76,6 +79,7 @@ class EditProductTextField extends StatelessWidget {
     this.isLtrValue = false,
     this.isBoldValue = false,
     this.accentColor,
+    this.hintText,
     this.onTap,
   });
 
@@ -93,6 +97,7 @@ class EditProductTextField extends StatelessWidget {
   final bool isLtrValue;
   final bool isBoldValue;
   final Color? accentColor;
+  final String? hintText;
   final VoidCallback? onTap;
 
   @override
@@ -135,6 +140,7 @@ class EditProductTextField extends StatelessWidget {
             context,
             suffix: suffix,
             accentColor: accentColor,
+            hintText: hintText,
           ),
         ),
       ],

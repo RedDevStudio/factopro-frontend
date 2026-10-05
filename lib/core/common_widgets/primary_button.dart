@@ -13,6 +13,7 @@ class PrimaryButton extends StatelessWidget {
     this.isLoading = false,
     this.icon,
     this.labelFontSize = 20,
+    this.isIconAtEnd = false,
   });
 
   final VoidCallback onTap;
@@ -24,8 +25,15 @@ class PrimaryButton extends StatelessWidget {
   final IconData? icon;
   final double labelFontSize;
 
+  /// Places [icon] after the label instead of before it.
+  final bool isIconAtEnd;
+
   @override
   Widget build(BuildContext context) {
+    final iconWidget = icon == null
+        ? null
+        : Icon(icon, color: labelTextColor ?? context.colorScheme.primary);
+
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -44,12 +52,10 @@ class PrimaryButton extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (icon != null)
-                    Icon(
-                      icon,
-                      color: labelTextColor ?? context.colorScheme.primary,
-                    ),
-                  if (icon != null) Gap(6),
+                  if (iconWidget != null && !isIconAtEnd) ...[
+                    iconWidget,
+                    Gap(6),
+                  ],
                   Flexible(
                     child: Text(
                       labelText,
@@ -62,6 +68,10 @@ class PrimaryButton extends StatelessWidget {
                       ),
                     ),
                   ),
+                  if (iconWidget != null && isIconAtEnd) ...[
+                    Gap(6),
+                    iconWidget,
+                  ],
                 ],
               ),
       ),
