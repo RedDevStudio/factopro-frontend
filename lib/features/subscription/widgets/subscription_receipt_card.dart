@@ -1,3 +1,4 @@
+import 'package:factopro/core/common_widgets/dashed_divider.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/subscription/widgets/subscription_colors.dart';
 import 'package:factopro/features/subscription/widgets/subscription_data.dart';
@@ -127,7 +128,7 @@ class SubscriptionReceiptCard extends StatelessWidget {
             style: TextStyle(color: accent),
           ),
           const Gap(14),
-          const _TearLine(),
+          const ReceiptTearLine(),
           const Gap(10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -202,60 +203,6 @@ class _ValidPill extends StatelessWidget {
               color: colorScheme.onTertiaryContainer,
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Dashed separator with half-circle notches cut into both card edges.
-class _TearLine extends StatelessWidget {
-  const _TearLine();
-
-  static const _notch = 20.0;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = context.colorScheme;
-
-    Widget notch() => Container(
-      width: _notch,
-      height: _notch,
-      decoration: BoxDecoration(
-        color: colorScheme.outlineVariant,
-        shape: BoxShape.circle,
-      ),
-    );
-
-    return SizedBox(
-      height: _notch,
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                const dash = 6.0;
-                const gap = 4.0;
-                final count = (constraints.maxWidth / (dash + gap)).floor();
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    count,
-                    (_) => Container(
-                      width: dash,
-                      height: 1.5,
-                      color: colorScheme.outline,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          PositionedDirectional(start: -_notch / 2 - 1, child: notch()),
-          PositionedDirectional(end: -_notch / 2 - 1, child: notch()),
         ],
       ),
     );

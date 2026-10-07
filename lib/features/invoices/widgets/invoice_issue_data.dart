@@ -9,6 +9,8 @@ class InvoiceIssueProductData {
     required this.categoryLabel,
     required this.unitPrice,
     required this.thumbnailIcon,
+    required this.barcode,
+    this.unitLabel = 'عدد',
     this.originalUnitPrice,
     this.discountLabel,
     this.note,
@@ -20,6 +22,12 @@ class InvoiceIssueProductData {
   final String categoryLabel;
   final int unitPrice;
   final IconData thumbnailIcon;
+
+  /// Retail barcode digits, read by the barcode scanner.
+  final String barcode;
+
+  /// Counting unit shown on receipts, e.g. "عدد" or "کیسه".
+  final String unitLabel;
 
   /// Struck-through price shown next to [unitPrice] when discounted.
   final int? originalUnitPrice;
@@ -90,6 +98,8 @@ const invoiceIssueMockCatalog = [
     categoryLabel: 'خواربار و برنج',
     unitPrice: 2200000,
     thumbnailIcon: Icons.rice_bowl_outlined,
+    barcode: '6260192847102',
+    unitLabel: 'کیسه',
   ),
   InvoiceIssueProductData(
     code: 'OIL - 204',
@@ -99,6 +109,7 @@ const invoiceIssueMockCatalog = [
     originalUnitPrice: 600000,
     discountLabel: '۱۵٪ تخفیف',
     thumbnailIcon: Icons.oil_barrel_outlined,
+    barcode: '626019284719',
   ),
   InvoiceIssueProductData(
     code: 'TNA - 305',
@@ -106,6 +117,7 @@ const invoiceIssueMockCatalog = [
     categoryLabel: 'روغن و کنسرو',
     unitPrice: 85000,
     thumbnailIcon: Icons.set_meal_outlined,
+    barcode: '6260192846120',
   ),
   InvoiceIssueProductData(
     code: 'PST - 402',
@@ -116,6 +128,7 @@ const invoiceIssueMockCatalog = [
     discountLabel: '۱۵٪ تخفیف',
     note: 'بسته‌بندی صادراتی زرماکارون',
     thumbnailIcon: Icons.ramen_dining_outlined,
+    barcode: '6260192844021',
   ),
   InvoiceIssueProductData(
     code: 'DRY - 118',
@@ -124,5 +137,22 @@ const invoiceIssueMockCatalog = [
     unitPrice: 45000,
     note: 'پاستوریزه و هموژنیزه',
     thumbnailIcon: Icons.local_drink_outlined,
+    barcode: '6260192841187',
   ),
 ];
+
+/// Adds [added] lines to [items]: quantities of products already on the
+/// invoice are summed, new products are appended in order.
+List<InvoiceIssueItemData> mergeInvoiceIssueItems(
+  List<InvoiceIssueItemData> items,
+  List<InvoiceIssueItemData> added,
+) {
+  final merged = {for (final item in items) item.product.code: item};
+  for (final item in added) {
+    final existing = merged[item.product.code];
+    merged[item.product.code] = existing == null
+        ? item
+        : existing.copyWith(quantity: existing.quantity + item.quantity);
+  }
+  return merged.values.toList();
+}

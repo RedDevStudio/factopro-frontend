@@ -2,6 +2,7 @@ import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/core/utils/extensions/number_extension.dart';
 import 'package:factopro/features/invoices/widgets/invoice_amount_text.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_data.dart';
+import 'package:factopro/features/invoices/widgets/invoice_stepper_button.dart';
 import 'package:factopro/features/products/widgets/edit_product_section_card.dart';
 import 'package:factopro/features/products/widgets/product_thumbnail.dart';
 import 'package:flutter/material.dart';
@@ -338,7 +339,7 @@ class _QuantityStepper extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _StepperButton(
+          InvoiceStepperButton(
             icon: Icons.add_rounded,
             iconColor: isDark ? colorScheme.onPrimary : colorScheme.onSecondary,
             backgroundColor: accent,
@@ -357,7 +358,7 @@ class _QuantityStepper extends StatelessWidget {
               ),
             ),
           ),
-          _StepperButton(
+          InvoiceStepperButton(
             icon: Icons.remove_rounded,
             iconColor: onDecrement == null
                 ? colorScheme.onSurfaceVariant.withValues(alpha: 0.4)
@@ -367,7 +368,7 @@ class _QuantityStepper extends StatelessWidget {
             onTap: onDecrement,
           ),
           const Gap(4),
-          _StepperButton(
+          InvoiceStepperButton(
             icon: Icons.delete_outline_rounded,
             iconColor: colorScheme.error,
             backgroundColor: colorScheme.errorContainer.withValues(
@@ -377,41 +378,6 @@ class _QuantityStepper extends StatelessWidget {
             onTap: onRemoveTap,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _StepperButton extends StatelessWidget {
-  const _StepperButton({
-    required this.icon,
-    required this.iconColor,
-    required this.backgroundColor,
-    required this.borderColor,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final Color iconColor;
-  final Color backgroundColor;
-  final Color borderColor;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        width: 30,
-        height: 30,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: borderColor),
-        ),
-        child: Icon(icon, size: 18, color: iconColor),
       ),
     );
   }
