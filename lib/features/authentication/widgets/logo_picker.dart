@@ -47,31 +47,39 @@ class _UserImagePickerState extends State<LogoPicker> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          CircleAvatar(
-            radius: widget.boxRadius,
-            backgroundColor: context.colorScheme.outlineVariant,
-            foregroundImage: _pickedImageFile != null
-                ? FileImage(_pickedImageFile!)
-                : null,
-            child: _pickedImageFile == null
-                ? Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.image_outlined,
-                        size: 32,
-                        color: context.colorScheme.onSurfaceVariant,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'لوگو',
-                        style: TextStyle(
+          // Ring so the circle stands out from the outlineVariant scaffold.
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: context.colorScheme.surface, width: 4),
+            ),
+            child: CircleAvatar(
+              radius: widget.boxRadius,
+              backgroundColor: context.colorScheme.outline,
+              foregroundImage: _pickedImageFile != null
+                  ? FileImage(_pickedImageFile!)
+                  : null,
+              child: _pickedImageFile == null
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.image_outlined,
+                          size: 32,
                           color: context.colorScheme.onSurfaceVariant,
                         ),
-                      ),
-                    ],
-                  )
-                : null,
+                        const SizedBox(height: 4),
+                        Text(
+                          'لوگو',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: context.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    )
+                  : null,
+            ),
           ),
           Positioned(
             bottom: 2,
@@ -81,7 +89,10 @@ class _UserImagePickerState extends State<LogoPicker> {
               decoration: BoxDecoration(
                 color: context.colorScheme.primary,
                 shape: BoxShape.circle,
-                border: Border.all(color: context.colorScheme.surface, width: 2),
+                border: Border.all(
+                  color: context.colorScheme.surface,
+                  width: 2,
+                ),
               ),
               child: Icon(
                 Icons.camera_alt,

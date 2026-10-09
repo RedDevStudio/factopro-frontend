@@ -180,6 +180,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     context.pushNamed(AppRoute.userStoreRegistration.name);
   }
 
+  void _openLogin() {
+    context.pushNamed(AppRoute.login.name);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
@@ -269,11 +273,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   duration: const Duration(milliseconds: 250),
                                   curve: Curves.easeOut,
                                   child: _isLastPage
-                                      ? const Padding(
-                                          padding: EdgeInsets.only(top: 12),
-                                          // No sign-in screen exists yet.
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 12,
+                                          ),
                                           child: OnboardingSecondaryButton(
                                             label: 'قبلا ثبت نام کرده‌اید؟ ورود به حساب',
+                                            onTap: _openLogin,
                                           ),
                                         )
                                       : const SizedBox(width: double.infinity),

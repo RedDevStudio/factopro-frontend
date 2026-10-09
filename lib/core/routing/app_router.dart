@@ -1,4 +1,6 @@
 import 'package:factopro/core/routing/scaffold_with_nested_navigation.dart';
+import 'package:factopro/features/authentication/view/login_screen.dart';
+import 'package:factopro/features/authentication/view/phone_verification_screen.dart';
 import 'package:factopro/features/authentication/view/user_store_registration.dart';
 import 'package:factopro/features/dashboard/view/dashboard_screen.dart';
 import 'package:factopro/features/invoices/view/invoice_issue_screen.dart';
@@ -20,6 +22,8 @@ enum AppRoute {
   splash,
   onboarding,
   userStoreRegistration,
+  phoneVerification,
+  login,
   settings,
   invoices,
   products,
@@ -50,6 +54,16 @@ final router = GoRouter(
       path: '/user-store-registration',
       name: AppRoute.userStoreRegistration.name,
       builder: (context, state) => UserStoreRegistration(),
+    ),
+    GoRoute(
+      path: '/phone-verification',
+      name: AppRoute.phoneVerification.name,
+      builder: (context, state) => const PhoneVerificationScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: AppRoute.login.name,
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/notifications',
