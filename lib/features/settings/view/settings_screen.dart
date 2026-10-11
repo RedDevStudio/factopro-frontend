@@ -13,33 +13,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class SettingsScreen extends StatelessWidget {
+/// Reads the app-wide [SettingsBloc] provided in `MyApp`, so changes made
+/// here (e.g. the display mode) apply to the whole application.
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SettingsBloc(),
-      child: const _SettingsView(),
-    );
-  }
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsView extends StatefulWidget {
-  const _SettingsView();
-
-  @override
-  State<_SettingsView> createState() => _SettingsViewState();
-}
-
-class _SettingsViewState extends State<_SettingsView> {
+class _SettingsScreenState extends State<SettingsScreen> {
   late final TextEditingController _preprintNoteController;
 
   @override
   void initState() {
     super.initState();
     _preprintNoteController = TextEditingController(
-      text: 'از خرید و اعتماد شما سپاسگزاریم. کالای فروخته شده تا ۷ روز در '
+      text:
+          'از خرید و اعتماد شما سپاسگزاریم. کالای فروخته شده تا ۷ روز در '
           'صورت باز نشدن پلمپ قابل تعویض می‌باشد.',
     );
   }
@@ -113,7 +104,11 @@ class _SettingsViewState extends State<_SettingsView> {
                           ),
                         ),
                         const Gap(6),
-                        Icon(Icons.star_border, size: 18, color: colorScheme.onSurfaceVariant),
+                        Icon(
+                          Icons.star_border,
+                          size: 18,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                         const Spacer(),
                         Text(
                           '۳ پلن اختصاصی',

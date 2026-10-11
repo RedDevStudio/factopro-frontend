@@ -16,6 +16,12 @@ enum AppDisplayMode {
     AppDisplayMode.dark => Icons.dark_mode_outlined,
     AppDisplayMode.light => Icons.light_mode_outlined,
   };
+
+  ThemeMode get themeMode => switch (this) {
+    AppDisplayMode.system => ThemeMode.system,
+    AppDisplayMode.dark => ThemeMode.dark,
+    AppDisplayMode.light => ThemeMode.light,
+  };
 }
 
 enum AppFontFamily {

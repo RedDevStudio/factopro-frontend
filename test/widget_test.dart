@@ -1,30 +1,89 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:factopro/app.dart';
+import 'package:factopro/features/settings/bloc/settings_bloc.dart';
+import 'package:factopro/features/settings/bloc/settings_models.dart';
+import 'package:factopro/features/settings/data/settings_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:factopro/main.dart';
+Future<SettingsRepository> _repository([
+  Map<String, Object> values = const {},
+]) async {
+  SharedPreferences.setMockInitialValues(values);
+  return SettingsRepository(await SharedPreferences.getInstance());
+}
+
+ThemeMode? _themeMode(WidgetTester tester) =>
+    tester.widget<MaterialApp>(find.byType(MaterialApp)).themeMode;
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('SettingsRepository', () {
+    test('defaults to system when nothing is saved', () async {
+      final repository = await _repository();
+      expect(repository.loadDisplayMode(), AppDisplayMode.system);
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('falls back to system for an unknown stored value', () async {
+      final repository = await _repository({'settings.display_mode': 'sepia'});
+      expect(repository.loadDisplayMode(), AppDisplayMode.system);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    test('round-trips every display mode', () async {
+      final repository = await _repository();
+      for (final mode in AppDisplayMode.values) {
+        await repository.saveDisplayMode(mode);
+        expect(repository.loadDisplayMode(), mode);
+      }
+    });
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  group('MyApp theme mode', () {
+    testWidgets('restores the saved preference on start', (tester) async {
+      final repository = await _repository({'settings.display_mode': 'dark'});
+      await tester.pumpWidget(MyApp(settingsRepository: repository));
+
+      expect(_themeMode(tester), ThemeMode.dark);
+    });
+
+    testWidgets('switches the global theme immediately and persists it', (
+      tester,
+    ) async {
+      final repository = await _repository();
+      await tester.pumpWidget(MyApp(settingsRepository: repository));
+      expect(_themeMode(tester), ThemeMode.system);
+
+      final bloc = BlocProvider.of<SettingsBloc>(
+        tester.element(find.byType(MaterialApp)),
+      );
+
+      for (final (mode, themeMode) in [
+        (AppDisplayMode.light, ThemeMode.light),
+        (AppDisplayMode.dark, ThemeMode.dark),
+        (AppDisplayMode.system, ThemeMode.system),
+      ]) {
+        bloc.add(SettingsDisplayModeChanged(mode));
+        await tester.pumpAndSettle();
+        expect(_themeMode(tester), themeMode);
+        expect(repository.loadDisplayMode(), mode);
+      }
+    });
+
+    testWidgets('system mode follows the platform brightness', (tester) async {
+      final repository = await _repository();
+      tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
+      addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
+
+      await tester.pumpWidget(MyApp(settingsRepository: repository));
+      final context = tester.element(find.byType(Navigator).first);
+      expect(Theme.of(context).brightness, Brightness.dark);
+
+      tester.platformDispatcher.platformBrightnessTestValue = Brightness.light;
+      await tester.pumpAndSettle();
+      expect(
+        Theme.of(tester.element(find.byType(Navigator).first)).brightness,
+        Brightness.light,
+      );
+    });
   });
 }
