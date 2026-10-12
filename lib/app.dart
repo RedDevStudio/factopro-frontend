@@ -11,6 +11,16 @@ class MyApp extends StatelessWidget {
 
   final SettingsRepository settingsRepository;
 
+  // Built once instead of on every theme change.
+  static final _lightTheme = ThemeData(
+    colorScheme: kColorScheme,
+    textTheme: PersianFonts.vazirTextTheme,
+  );
+  static final _darkTheme = ThemeData(
+    colorScheme: kDarkColorScheme,
+    textTheme: PersianFonts.vazirTextTheme,
+  );
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -20,14 +30,11 @@ class MyApp extends StatelessWidget {
             previous.displayMode != current.displayMode,
         builder: (context, state) => MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: kColorScheme,
-            textTheme: PersianFonts.vazirTextTheme,
-          ),
-          darkTheme: ThemeData(
-            colorScheme: kDarkColorScheme,
-            textTheme: PersianFonts.vazirTextTheme,
-          ),
+          theme: _lightTheme,
+          darkTheme: _darkTheme,
+          // The default cross-fade rebuilds every screen (including all
+          // kept-alive tabs) on each animation frame, which feels sluggish.
+          themeAnimationDuration: Duration.zero,
           themeMode: state.displayMode.themeMode,
           routerConfig: router,
         ),

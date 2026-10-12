@@ -9,6 +9,7 @@ import 'package:factopro/features/invoices/widgets/invoice_issue_data.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_header.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_item_card.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_phone_card.dart';
+import 'package:factopro/features/invoices/widgets/invoice_receipt_data.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -55,18 +56,37 @@ class _InvoiceIssueScreenState extends State<InvoiceIssueScreen> {
 
   void _onAmountChanged() => setState(() {});
 
-  int get _total {
-    final subtotal = _items.fold(0, (sum, item) => sum + item.total);
-    final deliveryFee = _deliveryFeeController.text.parseLocalizedInt() ?? 0;
+  int get _subtotal => _items.fold(0, (sum, item) => sum + item.total);
+
+  int get _deliveryFee => _deliveryFeeController.text.parseLocalizedInt() ?? 0;
+
+  int get _discount {
     final discountValue = _discountController.text.parseLocalizedInt() ?? 0;
-    final discount = switch (_discountMethod) {
+    return switch (_discountMethod) {
       InvoiceIssueDiscountMethod.code => 0,
       InvoiceIssueDiscountMethod.percent =>
-        subtotal * discountValue.clamp(0, 100) ~/ 100,
+        _subtotal * discountValue.clamp(0, 100) ~/ 100,
       InvoiceIssueDiscountMethod.amount => discountValue,
     };
-    final total = subtotal + deliveryFee - discount;
+  }
+
+  int get _total {
+    final total = _subtotal + _deliveryFee - _discount;
     return total < 0 ? 0 : total;
+  }
+
+  /// Shows the issued invoice in place of this form, so going back from it
+  /// returns to where the form was opened from.
+  void _issueInvoice() {
+    context.pushReplacementNamed(
+      AppRoute.invoiceFinal.name,
+      extra: InvoiceReceiptData.mock(
+        items: List.of(_items),
+        discount: _discount,
+        deliveryFee: _deliveryFee,
+        buyerPhone: _phoneController.text.trim(),
+      ),
+    );
   }
 
   void _updateQuantity(int index, int quantity) {
@@ -87,6 +107,16 @@ class _InvoiceIssueScreenState extends State<InvoiceIssueScreen> {
       extra: List<InvoiceIssueItemData>.of(_items),
     );
     if (items != null && mounted) setState(() => _items = items);
+  }
+
+  /// Scanned lines are added to the invoice; quantities of products already
+  /// on it are summed.
+  Future<void> _openBarcodeScanner() async {
+    final scanned = await context.pushNamed<List<InvoiceIssueItemData>>(
+      AppRoute.invoiceBarcodeScanner.name,
+    );
+    if (scanned == null || !mounted) return;
+    setState(() => _items = mergeInvoiceIssueItems(_items, scanned));
   }
 
   @override
@@ -150,7 +180,10 @@ class _InvoiceIssueScreenState extends State<InvoiceIssueScreen> {
                             ),
                             const Gap(14),
                           ],
-                          InvoiceIssueAddItemRow(onAddTap: _openProductPicker),
+                          InvoiceIssueAddItemRow(
+                            onAddTap: _openProductPicker,
+                            onBarcodeTap: _openBarcodeScanner,
+                          ),
                           const Gap(20),
                           InvoiceIssueChargesCard(
                             deliveryFeeController: _deliveryFeeController,
@@ -165,7 +198,10 @@ class _InvoiceIssueScreenState extends State<InvoiceIssueScreen> {
                   ),
                 ),
               ),
-              InvoiceIssueBottomBar(totalLabel: _total.toPersianAmount()),
+              InvoiceIssueBottomBar(
+                totalLabel: _total.toPersianAmount(),
+                onConfirmTap: _items.isEmpty ? null : _issueInvoice,
+              ),
             ],
           ),
         ),

@@ -15,21 +15,25 @@ class SubscriptionPlanSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: SubscriptionPlan.values.reversed
-          .map(
-            (plan) => Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: _PlanCard(
-                  plan: plan,
-                  selected: plan == selectedPlan,
-                  onTap: () => onPlanSelected(plan),
+    // IntrinsicHeight + stretch makes every card as tall as the tallest one.
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: SubscriptionPlan.values.reversed
+            .map(
+              (plan) => Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: _PlanCard(
+                    plan: plan,
+                    selected: plan == selectedPlan,
+                    onTap: () => onPlanSelected(plan),
+                  ),
                 ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 }
@@ -55,6 +59,7 @@ class _PlanCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(14),
       child: Stack(
         clipBehavior: Clip.none,
+        fit: StackFit.expand,
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
@@ -69,6 +74,7 @@ class _PlanCard extends StatelessWidget {
               ),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   plan.icon,

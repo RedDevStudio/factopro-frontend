@@ -4,9 +4,13 @@ import 'package:factopro/features/authentication/view/phone_verification_screen.
 import 'package:factopro/features/authentication/view/user_store_registration.dart';
 import 'package:factopro/features/dashboard/view/dashboard_screen.dart';
 import 'package:factopro/features/invoices/view/invoice_issue_screen.dart';
+import 'package:factopro/features/invoices/view/invoice_barcode_scanner_screen.dart';
+import 'package:factopro/features/invoices/view/invoice_final_screen.dart';
 import 'package:factopro/features/invoices/view/invoice_product_picker_screen.dart';
+import 'package:factopro/features/invoices/view/invoice_thermal_preview_screen.dart';
 import 'package:factopro/features/invoices/view/invoices_screen.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_data.dart';
+import 'package:factopro/features/invoices/widgets/invoice_receipt_data.dart';
 import 'package:factopro/features/notifications/view/notifications_screen.dart';
 import 'package:factopro/features/onboarding/view/onboarding_screen.dart';
 import 'package:factopro/features/products/view/edit_product_screen.dart';
@@ -35,6 +39,9 @@ enum AppRoute {
   subscriptionPaymentHistory,
   invoiceIssue,
   invoiceProductPicker,
+  invoiceBarcodeScanner,
+  invoiceFinal,
+  invoiceThermalPreview,
 }
 
 final router = GoRouter(
@@ -101,6 +108,24 @@ final router = GoRouter(
       name: AppRoute.invoiceProductPicker.name,
       builder: (context, state) => InvoiceProductPickerScreen(
         initialItems: state.extra as List<InvoiceIssueItemData>? ?? const [],
+      ),
+    ),
+    GoRoute(
+      path: '/invoice-barcode-scanner',
+      name: AppRoute.invoiceBarcodeScanner.name,
+      builder: (context, state) => const InvoiceBarcodeScannerScreen(),
+    ),
+    GoRoute(
+      path: '/invoice-final',
+      name: AppRoute.invoiceFinal.name,
+      builder: (context, state) =>
+          InvoiceFinalScreen(receipt: state.extra as InvoiceReceiptData?),
+    ),
+    GoRoute(
+      path: '/invoice-thermal-preview',
+      name: AppRoute.invoiceThermalPreview.name,
+      builder: (context, state) => InvoiceThermalPreviewScreen(
+        receipt: state.extra as InvoiceReceiptData?,
       ),
     ),
     StatefulShellRoute.indexedStack(

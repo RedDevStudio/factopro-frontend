@@ -16,11 +16,17 @@ class InvoiceStatusPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (dotColor, backgroundColor, textColor) = invoiceStatusColors(context, status);
+    final (dotColor, backgroundColor, textColor) = invoiceStatusColors(
+      context,
+      status,
+    );
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -28,7 +34,11 @@ class InvoiceStatusPill extends StatelessWidget {
           const Gap(5),
           Text(
             label ?? status.badgeLabel,
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: textColor),
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
           ),
         ],
       ),

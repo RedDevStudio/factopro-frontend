@@ -29,14 +29,17 @@ class SettingsSectionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Spacer(),
-              Text(
-                title,
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: context.colorScheme.onSurface,
+              Expanded(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.onSurface,
+                  ),
                 ),
               ),
               const Gap(6),

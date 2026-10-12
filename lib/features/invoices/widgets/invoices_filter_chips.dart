@@ -60,7 +60,9 @@ class _FilterChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected ? colorScheme.secondary : colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: selected ? colorScheme.secondary : colorScheme.outline),
+          border: Border.all(
+            color: selected ? colorScheme.secondary : colorScheme.outline,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -74,7 +76,9 @@ class _FilterChip extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: selected ? colorScheme.onSecondary : colorScheme.onSurface,
+                color: selected
+                    ? colorScheme.onSecondary
+                    : colorScheme.onSurface,
               ),
             ),
           ],

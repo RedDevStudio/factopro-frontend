@@ -25,14 +25,18 @@ class SettingsNavRow extends StatelessWidget {
       child: Row(
         children: [
           Icon(Icons.chevron_left, size: 20, color: colorScheme.onSurfaceVariant),
-          const Spacer(),
-          Text(
-            label,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: colorScheme.onSurface,
+          const Gap(8),
+          Expanded(
+            child: Text(
+              label,
+              textAlign: TextAlign.right,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
             ),
           ),
           const Gap(8),

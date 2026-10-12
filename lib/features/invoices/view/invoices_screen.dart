@@ -23,13 +23,21 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
   late InvoiceFilterData _selectedFilter;
 
   static const _filters = [
-    InvoiceFilterData(label: 'سررسید گذشته', count: '۳', status: InvoiceStatus.overdue),
+    InvoiceFilterData(
+      label: 'سررسید گذشته',
+      count: '۳',
+      status: InvoiceStatus.overdue,
+    ),
     InvoiceFilterData(
       label: 'در انتظار پرداخت',
       count: '۵',
       status: InvoiceStatus.pendingPayment,
     ),
-    InvoiceFilterData(label: 'تسویه شده', count: '۱۶', status: InvoiceStatus.paid),
+    InvoiceFilterData(
+      label: 'تسویه شده',
+      count: '۱۶',
+      status: InvoiceStatus.paid,
+    ),
     InvoiceFilterData(label: 'همه', count: '۲۴'),
   ];
 
@@ -180,7 +188,8 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                 children: [
                   InvoicesHeader(
                     storeName: 'فروشگاه مرکزی • پایانه ۱',
-                    onNotificationsTap: () => context.pushNamed(AppRoute.notifications.name),
+                    onNotificationsTap: () =>
+                        context.pushNamed(AppRoute.notifications.name),
                   ),
                   const Gap(16),
                   const InvoicesSalesReportCard(
@@ -197,7 +206,8 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                   InvoicesFilterChips(
                     filters: _filters,
                     selected: _selectedFilter,
-                    onSelected: (filter) => setState(() => _selectedFilter = filter),
+                    onSelected: (filter) =>
+                        setState(() => _selectedFilter = filter),
                   ),
                   const Gap(16),
                   for (final invoice in _invoices) ...[
@@ -205,7 +215,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                     if (invoice != _invoices.last) const Gap(12),
                   ],
                   const Gap(20),
-                  InvoicesBottomBar(),
+                  InvoicesBottomBar(
+                    onNewInvoiceTap: () =>
+                        context.pushNamed(AppRoute.invoiceIssue.name),
+                  ),
                   const Gap(16),
                 ],
               ),

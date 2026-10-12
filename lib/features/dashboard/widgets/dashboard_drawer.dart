@@ -39,8 +39,22 @@ class DashboardDrawer extends StatelessWidget {
   void _openLink(BuildContext context, DashboardDrawerLink link) {
     final route = link.route;
     _close(context);
-    if (route != null) context.goNamed(route.name);
+    if (route == null) return;
+    // Bottom-nav tabs are switched to; full-screen pages are pushed on top so
+    // the back button returns to the dashboard.
+    if (_tabRoutes.contains(route)) {
+      context.goNamed(route.name);
+    } else {
+      context.pushNamed(route.name);
+    }
   }
+
+  static const _tabRoutes = {
+    AppRoute.settings,
+    AppRoute.invoices,
+    AppRoute.products,
+    AppRoute.dashboard,
+  };
 
   void _openStoreRegistration(BuildContext context) {
     _close(context);

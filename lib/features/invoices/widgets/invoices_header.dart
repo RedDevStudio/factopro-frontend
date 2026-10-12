@@ -45,7 +45,10 @@ class InvoicesHeader extends StatelessWidget {
             const Gap(4),
             Text(
               storeName,
-              style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+              style: TextStyle(
+                fontSize: 12,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -57,7 +60,10 @@ class InvoicesHeader extends StatelessWidget {
             width: 42,
             height: 42,
             alignment: Alignment.center,
-            decoration: BoxDecoration(color: colorScheme.primary, shape: BoxShape.circle),
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              shape: BoxShape.circle,
+            ),
             child: Text(
               'فا',
               style: TextStyle(
@@ -74,7 +80,11 @@ class InvoicesHeader extends StatelessWidget {
 }
 
 class _IconCircleButton extends StatelessWidget {
-  const _IconCircleButton({required this.icon, this.onTap, this.showBadge = false});
+  const _IconCircleButton({
+    required this.icon,
+    this.onTap,
+    this.showBadge = false,
+  });
 
   final IconData icon;
   final VoidCallback? onTap;

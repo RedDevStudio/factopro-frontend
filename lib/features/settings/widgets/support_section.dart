@@ -64,24 +64,32 @@ class SupportSection extends StatelessWidget {
                           ],
                         ),
                       ),
-                    const Spacer(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'پشتیبان‌گیری ابری خودکار',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.onSurface,
+                    const Gap(8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'پشتیبان‌گیری ابری خودکار',
+                            textAlign: TextAlign.right,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: colorScheme.onSurface,
+                            ),
                           ),
-                        ),
-                        const Gap(2),
-                        Text(
-                          'آخرین همگام‌سازی: $lastBackupLabel',
-                          style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
-                        ),
-                      ],
+                          const Gap(2),
+                          Text(
+                            'آخرین همگام‌سازی: $lastBackupLabel',
+                            textAlign: TextAlign.right,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                          ),
+                        ],
+                      ),
                     ),
                     const Gap(8),
                     Icon(Icons.cloud_done_outlined, size: 18, color: colorScheme.primary),

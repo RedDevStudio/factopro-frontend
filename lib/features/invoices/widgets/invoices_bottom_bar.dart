@@ -31,7 +31,11 @@ class InvoicesBottomBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.download_outlined, size: 16, color: colorScheme.primary),
+                Icon(
+                  Icons.download_outlined,
+                  size: 16,
+                  color: colorScheme.primary,
+                ),
                 const Gap(6),
                 Text(
                   'دانلود خروجی',
@@ -41,10 +45,18 @@ class InvoicesBottomBar extends StatelessWidget {
                     color: colorScheme.primary,
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  'خروجی گزارشات اکسل و مالیات',
-                  style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                const Gap(8),
+                Expanded(
+                  child: Text(
+                    'خروجی گزارشات اکسل و مالیات',
+                    textAlign: TextAlign.end,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -56,7 +68,9 @@ class InvoicesBottomBar extends StatelessWidget {
           labelText: 'صدور فاکتور جدید',
           icon: Icons.add,
           backgroundColor: isDark ? colorScheme.primary : colorScheme.secondary,
-          labelTextColor: isDark ? colorScheme.onPrimary : colorScheme.onSecondary,
+          labelTextColor: isDark
+              ? colorScheme.onPrimary
+              : colorScheme.onSecondary,
           borderColor: isDark ? colorScheme.primary : colorScheme.secondary,
         ),
       ],

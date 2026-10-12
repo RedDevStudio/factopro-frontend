@@ -2,7 +2,6 @@ import 'package:factopro/core/common_widgets/primary_button.dart';
 import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/dashboard/bloc/dashboard_bloc.dart';
-import 'package:factopro/features/dashboard/widgets/dashboard_drawer.dart';
 import 'package:factopro/features/dashboard/widgets/dashboard_header.dart';
 import 'package:factopro/features/dashboard/widgets/dashboard_stats_row.dart';
 import 'package:factopro/features/dashboard/widgets/quick_access_section.dart';
@@ -13,38 +12,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+/// The [DashboardBloc] and the [DashboardDrawer] live in
+/// `ScaffoldWithNestedNavigationBar`, so the drawer slides over the bottom
+/// navigation bar too.
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => DashboardBloc(),
-      child: const _DashboardView(),
-    );
-  }
-}
-
-class _DashboardView extends StatelessWidget {
-  const _DashboardView();
-
-  @override
-  Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
+    // Resolved from this context (above the dashboard's own Scaffold), so it
+    // is the shell Scaffold that owns the drawer and the bottom nav bar.
+    final shellScaffold = Scaffold.of(context);
 
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: colorScheme.outlineVariant,
-          drawerScrimColor: colorScheme.scrim,
-          endDrawer: DashboardDrawer(
-            managerName: state.managerName,
-            managerRole: state.managerRole,
-            managerInitials: state.managerInitials,
-            stores: state.stores,
-            links: state.drawerLinks,
-          ),
           body: SafeArea(
             bottom: false,
             child: Center(
@@ -58,17 +43,16 @@ class _DashboardView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Builder(
-                        builder: (context) => DashboardHeader(
-                          dateLabel: state.dateLabel,
-                          onNotificationsTap: () =>
-                              context.pushNamed(AppRoute.notifications.name),
-                          onMenuTap: () => Scaffold.of(context).openEndDrawer(),
-                        ),
+                      DashboardHeader(
+                        dateLabel: state.dateLabel,
+                        onNotificationsTap: () =>
+                            context.pushNamed(AppRoute.notifications.name),
+                        onMenuTap: shellScaffold.openEndDrawer,
                       ),
                       const Gap(16),
                       PrimaryButton(
-                        onTap: () {},
+                        onTap: () =>
+                            context.pushNamed(AppRoute.invoiceIssue.name),
                         labelText: 'صدور فاکتور جدید',
                         icon: Icons.add,
                         backgroundColor: isDark

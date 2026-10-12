@@ -76,10 +76,9 @@ class InvoiceReceiptData {
   }
 
   /// e.g. "مشتری نقدی (۰۹۱۲۳۴۵۶۷۸۹)".
-  String get buyerLabel =>
-      buyerPhone == null || buyerPhone!.isEmpty
-          ? buyerName
-          : '$buyerName ($buyerPhone)';
+  String get buyerLabel => buyerPhone == null || buyerPhone!.isEmpty
+      ? buyerName
+      : '$buyerName ($buyerPhone)';
 
   InvoiceReceiptData copyWith({InvoiceStatus? status}) => InvoiceReceiptData(
     storeName: storeName,

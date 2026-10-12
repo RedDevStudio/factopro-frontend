@@ -18,7 +18,9 @@ class InvoiceCard extends StatelessWidget {
     final colorScheme = context.colorScheme;
     final isOverdue = invoice.status == InvoiceStatus.overdue;
     final amountColor = isOverdue ? colorScheme.error : colorScheme.onSurface;
-    final amountLabelColor = isOverdue ? colorScheme.error : colorScheme.onSurfaceVariant;
+    final amountLabelColor = isOverdue
+        ? colorScheme.error
+        : colorScheme.onSurfaceVariant;
 
     return InkWell(
       onTap: onTap,
@@ -36,7 +38,11 @@ class InvoiceCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.more_vert, size: 18, color: colorScheme.onSurfaceVariant),
+                Icon(
+                  Icons.more_vert,
+                  size: 18,
+                  color: colorScheme.onSurfaceVariant,
+                ),
                 const Spacer(),
                 InvoiceStatusPill(status: invoice.status),
               ],
@@ -66,7 +72,10 @@ class InvoiceCard extends StatelessWidget {
                           if (invoice.customerNote != null)
                             Text(
                               invoice.customerNote!,
-                              style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
                             ),
                         ],
                       ),
@@ -76,13 +85,19 @@ class InvoiceCard extends StatelessWidget {
                             ? 'شماره: ${invoice.invoiceNumber}'
                             : 'شماره: ${invoice.invoiceNumber} • ${invoice.time}',
                         textAlign: TextAlign.right,
-                        style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                       const Gap(2),
                       Text(
                         invoice.date,
                         textAlign: TextAlign.right,
-                        style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -111,7 +126,10 @@ class InvoiceCard extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 1),
                           child: Text(
                             'تومان',
-                            style: TextStyle(fontSize: 10, color: colorScheme.onSurfaceVariant),
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                           ),
                         ),
                         const Gap(2),
@@ -137,7 +155,10 @@ class InvoiceCard extends StatelessWidget {
                         textAlign: TextAlign.right,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                       if (invoice.secondaryDescription != null) ...[
                         const Gap(4),
@@ -146,7 +167,10 @@ class InvoiceCard extends StatelessWidget {
                           textAlign: TextAlign.right,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ],
                     ],
@@ -186,7 +210,9 @@ class _InvoiceCardActionsRow extends StatelessWidget {
       (action) => action.style == InvoiceActionStyle.link,
       orElse: () => actions.first,
     );
-    final otherActions = actions.where((action) => action != linkAction).toList();
+    final otherActions = actions
+        .where((action) => action != linkAction)
+        .toList();
 
     return Row(
       children: [

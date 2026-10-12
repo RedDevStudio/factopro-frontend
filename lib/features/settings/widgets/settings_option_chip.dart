@@ -53,13 +53,22 @@ class SettingsOptionChip extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 4),
                     child: Icon(Icons.check, size: 16, color: colorScheme.primary),
                   ),
-                Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                    color: selected ? colorScheme.primary : colorScheme.onSurface,
+                // Narrow chips (e.g. four font sizes in one row) can't fit the
+                // check icon plus a bold label, so shrink the label instead
+                // of overflowing.
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                        color: selected ? colorScheme.primary : colorScheme.onSurface,
+                      ),
+                    ),
                   ),
                 ),
               ],

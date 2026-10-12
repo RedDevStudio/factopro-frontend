@@ -18,12 +18,18 @@ class InvoiceStatusBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (accent, container, onContainer) = invoiceStatusColors(context, status);
+    final (accent, container, onContainer) = invoiceStatusColors(
+      context,
+      status,
+    );
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(color: container, borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(
+        color: container,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Row(
         children: [
           Icon(icon, size: 16, color: accent),
@@ -35,7 +41,11 @@ class InvoiceStatusBanner extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 label,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: onContainer),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: onContainer,
+                ),
               ),
             ],
           ),

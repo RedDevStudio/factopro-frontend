@@ -83,6 +83,7 @@ final class DashboardState extends Equatable {
         icon: Icons.description_outlined,
         label: 'صدور فاکتور سریع',
         accentColor: DashboardAccentColor.primary,
+        route: AppRoute.invoiceIssue,
       ),
       DashboardDrawerLink(
         icon: Icons.view_in_ar_outlined,

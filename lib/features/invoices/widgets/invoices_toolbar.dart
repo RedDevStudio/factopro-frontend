@@ -22,7 +22,10 @@ class InvoicesToolbar extends StatelessWidget {
 
     return Row(
       children: [
-        _ToolbarIconButton(icon: Icons.calendar_month_outlined, onTap: onCalendarTap),
+        _ToolbarIconButton(
+          icon: Icons.calendar_month_outlined,
+          onTap: onCalendarTap,
+        ),
         const Gap(8),
         _ToolbarIconButton(icon: Icons.grid_view_rounded, onTap: onGridTap),
         const Gap(8),
@@ -35,8 +38,15 @@ class InvoicesToolbar extends StatelessWidget {
             decoration: InputDecoration(
               isDense: true,
               hintText: 'جستجوی نام مشتری، شماره فاکتور...',
-              hintStyle: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
-              suffixIcon: Icon(Icons.search, size: 20, color: colorScheme.onSurfaceVariant),
+              hintStyle: TextStyle(
+                fontSize: 13,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              suffixIcon: Icon(
+                Icons.search,
+                size: 20,
+                color: colorScheme.onSurfaceVariant,
+              ),
               filled: true,
               fillColor: colorScheme.surface,
               contentPadding: const EdgeInsets.symmetric(vertical: 12),

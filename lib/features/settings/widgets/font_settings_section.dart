@@ -88,10 +88,15 @@ class FontSettingsSection extends StatelessWidget {
                     color: colorScheme.onTertiaryContainer,
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  'پیش‌نمایش صدور فاکتور:',
-                  style: TextStyle(fontSize: 12, color: colorScheme.onTertiaryContainer),
+                const Gap(8),
+                Expanded(
+                  child: Text(
+                    'پیش‌نمایش صدور فاکتور:',
+                    textAlign: TextAlign.right,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12, color: colorScheme.onTertiaryContainer),
+                  ),
                 ),
               ],
             ),

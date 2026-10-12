@@ -1,3 +1,4 @@
+import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_data.dart';
 import 'package:factopro/features/invoices/widgets/invoice_product_picker_bottom_bar.dart';
@@ -79,6 +80,21 @@ class _InvoiceProductPickerScreenState
     });
   }
 
+  /// Scanned lines are added to the selection; quantities of products
+  /// already selected are summed.
+  Future<void> _openBarcodeScanner() async {
+    final scanned = await context.pushNamed<List<InvoiceIssueItemData>>(
+      AppRoute.invoiceBarcodeScanner.name,
+    );
+    if (scanned == null || !mounted) return;
+    final merged = mergeInvoiceIssueItems(_selection.values.toList(), scanned);
+    setState(() {
+      _selection
+        ..clear()
+        ..addAll({for (final item in merged) item.product.code: item});
+    });
+  }
+
   void _close() {
     if (context.canPop()) context.pop();
   }
@@ -114,6 +130,7 @@ class _InvoiceProductPickerScreenState
                         const Gap(14),
                         InvoiceProductPickerSearchField(
                           controller: _searchController,
+                          onScanTap: _openBarcodeScanner,
                         ),
                         const Gap(14),
                         InvoiceProductPickerCategoryChips(

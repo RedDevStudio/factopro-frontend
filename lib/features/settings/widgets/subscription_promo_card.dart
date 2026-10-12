@@ -47,14 +47,18 @@ class SubscriptionPromoCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
-              Text(
-                'طرح طلایی حرفه‌ای (Gold Pro)',
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSecondary,
+              const Gap(8),
+              Expanded(
+                child: Text(
+                  'طرح طلایی حرفه‌ای (Gold Pro)',
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSecondary,
+                  ),
                 ),
               ),
               const Gap(6),
@@ -78,10 +82,15 @@ class SubscriptionPromoCard extends StatelessWidget {
                   color: colorScheme.onSecondary,
                 ),
               ),
-              const Spacer(),
-              Text(
-                'اعتبار باقی‌مانده اشتراک:',
-                style: TextStyle(fontSize: 12, color: colorScheme.onSecondary),
+              const Gap(8),
+              Expanded(
+                child: Text(
+                  'اعتبار باقی‌مانده اشتراک:',
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 12, color: colorScheme.onSecondary),
+                ),
               ),
             ],
           ),

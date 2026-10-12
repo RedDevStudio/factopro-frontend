@@ -50,13 +50,18 @@ class InvoicePrinterSection extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
-              Text(
-                'مالیات بر ارزش افزوده پیش‌فرض',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: colorScheme.onSurfaceVariant,
+              const Gap(8),
+              Expanded(
+                child: Text(
+                  'مالیات بر ارزش افزوده پیش‌فرض',
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ),
             ],
@@ -90,13 +95,18 @@ class InvoicePrinterSection extends StatelessWidget {
                           ),
                         ),
                       ),
-                    const Spacer(),
-                    Text(
-                      'چاپگر حرارتی / دستگاه پوز',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onSurface,
+                    const Gap(8),
+                    Expanded(
+                      child: Text(
+                        'چاپگر حرارتی / دستگاه پوز',
+                        textAlign: TextAlign.right,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                     ),
                     const Gap(6),

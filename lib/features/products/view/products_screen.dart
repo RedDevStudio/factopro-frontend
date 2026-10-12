@@ -114,7 +114,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const ProductsHeader(subtitle: 'مدیریت موجودی سوپرمارکت'),
+                  ProductsHeader(
+                    subtitle: 'مدیریت موجودی سوپرمارکت',
+                    onScanTap: () => context.pushNamed(
+                      AppRoute.invoiceBarcodeScanner.name,
+                    ),
+                  ),
                   const Gap(16),
                   ProductsToolbar(searchController: _searchController),
                   const Gap(12),

@@ -133,6 +133,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     progress: state.subscriptionProgress,
                     onRenewPressed: () =>
                         context.pushNamed(AppRoute.subscription.name),
+                    onPaymentHistoryPressed: () => context.pushNamed(
+                      AppRoute.subscriptionPaymentHistory.name,
+                    ),
                   ),
                   const Gap(16),
                   DisplayModeSection(

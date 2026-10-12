@@ -48,14 +48,22 @@ class InvoicesSalesReportCard extends StatelessWidget {
                   color: onSecondary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(Icons.event_note_outlined, size: 16, color: onSecondary),
+                child: Icon(
+                  Icons.event_note_outlined,
+                  size: 16,
+                  color: onSecondary,
+                ),
               ),
               const Gap(8),
               Expanded(
                 child: Text(
                   dateLabel,
                   textAlign: TextAlign.right,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: onSecondary),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: onSecondary,
+                  ),
                 ),
               ),
             ],
@@ -76,7 +84,11 @@ class InvoicesSalesReportCard extends StatelessWidget {
                   const Gap(5),
                   Text(
                     issuedInvoicesLabel,
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: onSecondary),
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: onSecondary,
+                    ),
                   ),
                 ],
               ),
@@ -88,7 +100,10 @@ class InvoicesSalesReportCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  child: _SubStat(label: receivablesLabel, amount: receivablesAmount),
+                  child: _SubStat(
+                    label: receivablesLabel,
+                    amount: receivablesAmount,
+                  ),
                 ),
                 const Gap(10),
                 Expanded(
@@ -128,7 +143,10 @@ class _SubStat extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.right,
-            style: TextStyle(fontSize: 11, color: onSecondary.withValues(alpha: 0.75)),
+            style: TextStyle(
+              fontSize: 11,
+              color: onSecondary.withValues(alpha: 0.75),
+            ),
           ),
           const Gap(8),
           Row(
@@ -139,14 +157,21 @@ class _SubStat extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 1),
                 child: Text(
                   'تومان',
-                  style: TextStyle(fontSize: 10, color: onSecondary.withValues(alpha: 0.75)),
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: onSecondary.withValues(alpha: 0.75),
+                  ),
                 ),
               ),
               const Gap(4),
               Flexible(
                 child: Text(
                   amount,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: onSecondary),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: onSecondary,
+                  ),
                 ),
               ),
             ],
