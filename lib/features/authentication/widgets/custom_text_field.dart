@@ -19,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.keyboardType,
     this.textDirection = TextDirection.rtl,
+    this.onTap,
   });
 
   final TextEditingController controller;
@@ -37,6 +38,10 @@ class CustomTextField extends StatelessWidget {
 
   /// Direction of the typed text; use [TextDirection.ltr] for numbers.
   final TextDirection textDirection;
+
+  /// Called when the field is tapped, e.g. to open a picker for a
+  /// [readOnly] field.
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +82,7 @@ class CustomTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           readOnly: readOnly,
+          onTap: onTap,
           maxLines: maxLines,
           keyboardType: keyboardType,
           textDirection: textDirection,

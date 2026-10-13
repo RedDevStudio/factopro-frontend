@@ -4,14 +4,55 @@ import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/features/authentication/widgets/auth_app_bar.dart';
 import 'package:factopro/features/authentication/widgets/custom_text_field.dart';
 import 'package:factopro/features/authentication/widgets/logo_picker.dart';
+import 'package:factopro/features/authentication/widgets/province_picker_sheet.dart';
 import 'package:factopro/features/authentication/widgets/store_registration_guide_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-class UserStoreRegistration extends StatelessWidget {
+class UserStoreRegistration extends StatefulWidget {
   const UserStoreRegistration({super.key});
+
+  @override
+  State<UserStoreRegistration> createState() => _UserStoreRegistrationState();
+}
+
+class _UserStoreRegistrationState extends State<UserStoreRegistration> {
+  // Kept in state so typed values survive rebuilds (e.g. a theme change).
+  final _storeNameController = TextEditingController();
+  final _managerNameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _provinceController = TextEditingController(text: 'تهران');
+  final _cityController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _postalCodeController = TextEditingController();
+  final _categoryController = TextEditingController();
+
+  @override
+  void dispose() {
+    for (final controller in [
+      _storeNameController,
+      _managerNameController,
+      _phoneController,
+      _provinceController,
+      _cityController,
+      _addressController,
+      _postalCodeController,
+      _categoryController,
+    ]) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  Future<void> _pickProvince() async {
+    final province = await showProvincePickerSheet(
+      context,
+      selected: _provinceController.text,
+    );
+    if (province != null) _provinceController.text = province;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +94,7 @@ class UserStoreRegistration extends StatelessWidget {
                       ),
                       const Gap(24),
                       CustomTextField(
-                        controller: TextEditingController(),
+                        controller: _storeNameController,
                         title: 'نام فروشگاه',
                         hintText: 'مثلاً: فروشگاه آریا یا هایپرمارکت پارس',
                         icon: Icons.apartment,
@@ -61,7 +102,7 @@ class UserStoreRegistration extends StatelessWidget {
                       ),
                       const Gap(16),
                       CustomTextField(
-                        controller: TextEditingController(),
+                        controller: _managerNameController,
                         title: 'نام و نام خانوادگی مدیر',
                         hintText: 'مثلاً: محمد حسینی',
                         icon: Icons.person_outline,
@@ -69,7 +110,7 @@ class UserStoreRegistration extends StatelessWidget {
                       ),
                       const Gap(16),
                       CustomTextField(
-                        controller: TextEditingController(),
+                        controller: _phoneController,
                         title: 'شماره فروشگاه / همراه',
                         hintText: '۰۲۱-۸۸۸۸۰۰۰۰ یا ۰۹۱۲xxxxxxx',
                         icon: Icons.phone_outlined,
@@ -83,7 +124,8 @@ class UserStoreRegistration extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomTextField(
-                              controller: TextEditingController(text: 'تهران'),
+                              controller: _provinceController,
+                              onTap: _pickProvince,
                               title: 'استان',
                               hintText: 'استان',
                               trailing: Icon(
@@ -96,7 +138,7 @@ class UserStoreRegistration extends StatelessWidget {
                           ),
                           Expanded(
                             child: CustomTextField(
-                              controller: TextEditingController(),
+                              controller: _cityController,
                               title: 'شهر / شهرستان',
                               hintText: 'مثال: تهران',
                               isRequired: true,
@@ -106,7 +148,7 @@ class UserStoreRegistration extends StatelessWidget {
                       ),
                       const Gap(16),
                       CustomTextField(
-                        controller: TextEditingController(),
+                        controller: _addressController,
                         title: 'آدرس دقیق فروشگاه',
                         hintText: 'خیابان اصلی، کوچه، پلاک، طبقه یا واحد تجاری',
                         icon: Icons.place_outlined,
@@ -136,7 +178,7 @@ class UserStoreRegistration extends StatelessWidget {
                       ),
                       const Gap(8),
                       CustomTextField(
-                        controller: TextEditingController(),
+                        controller: _postalCodeController,
                         title: 'کد پستی',
                         showLabel: false,
                         hintText: '1234567890',
@@ -145,7 +187,7 @@ class UserStoreRegistration extends StatelessWidget {
                       ),
                       const Gap(16),
                       CustomTextField(
-                        controller: TextEditingController(),
+                        controller: _categoryController,
                         title: 'دسته‌بندی و صنف فروشگاه',
                         hintText: 'سوپرمارکت و مواد غذایی',
                       ),

@@ -4,7 +4,6 @@ import 'package:factopro/features/authentication/view/phone_verification_screen.
 import 'package:factopro/features/authentication/view/user_store_registration.dart';
 import 'package:factopro/features/dashboard/view/dashboard_screen.dart';
 import 'package:factopro/features/invoices/view/invoice_issue_screen.dart';
-import 'package:factopro/features/invoices/view/invoice_barcode_scanner_screen.dart';
 import 'package:factopro/features/invoices/view/invoice_final_screen.dart';
 import 'package:factopro/features/invoices/view/invoice_product_picker_screen.dart';
 import 'package:factopro/features/invoices/view/invoice_thermal_preview_screen.dart';
@@ -14,6 +13,7 @@ import 'package:factopro/features/invoices/widgets/invoice_receipt_data.dart';
 import 'package:factopro/features/notifications/view/notifications_screen.dart';
 import 'package:factopro/features/onboarding/view/onboarding_screen.dart';
 import 'package:factopro/features/products/view/edit_product_screen.dart';
+import 'package:factopro/features/products/view/product_barcode_scanner_screen.dart';
 import 'package:factopro/features/products/view/products_screen.dart';
 import 'package:factopro/features/products/widgets/product_card_data.dart';
 import 'package:factopro/features/settings/view/settings_screen.dart';
@@ -39,7 +39,7 @@ enum AppRoute {
   subscriptionPaymentHistory,
   invoiceIssue,
   invoiceProductPicker,
-  invoiceBarcodeScanner,
+  productBarcodeScanner,
   invoiceFinal,
   invoiceThermalPreview,
 }
@@ -111,9 +111,9 @@ final router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/invoice-barcode-scanner',
-      name: AppRoute.invoiceBarcodeScanner.name,
-      builder: (context, state) => const InvoiceBarcodeScannerScreen(),
+      path: '/product-barcode-scanner',
+      name: AppRoute.productBarcodeScanner.name,
+      builder: (context, state) => const ProductBarcodeScannerScreen(),
     ),
     GoRoute(
       path: '/invoice-final',

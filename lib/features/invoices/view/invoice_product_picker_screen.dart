@@ -84,7 +84,7 @@ class _InvoiceProductPickerScreenState
   /// already selected are summed.
   Future<void> _openBarcodeScanner() async {
     final scanned = await context.pushNamed<List<InvoiceIssueItemData>>(
-      AppRoute.invoiceBarcodeScanner.name,
+      AppRoute.productBarcodeScanner.name,
     );
     if (scanned == null || !mounted) return;
     final merged = mergeInvoiceIssueItems(_selection.values.toList(), scanned);

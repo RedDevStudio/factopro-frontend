@@ -12,21 +12,21 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-/// "اسکنر بارکد" screen opened from the issue invoice form and the product
-/// picker. The live camera detects barcodes and shows the scanned code;
+/// "اسکنر بارکد" screen opened from the products screen, the issue invoice
+/// form and the product picker. The live camera detects barcodes and shows the scanned code;
 /// codes matching the mock catalog (or typed via "ورود دستی بارکد") are added
 /// to the list. Pops with the scanned lines when confirmed; cancelling or
 /// going back discards them.
-class InvoiceBarcodeScannerScreen extends StatefulWidget {
-  const InvoiceBarcodeScannerScreen({super.key});
+class ProductBarcodeScannerScreen extends StatefulWidget {
+  const ProductBarcodeScannerScreen({super.key});
 
   @override
-  State<InvoiceBarcodeScannerScreen> createState() =>
-      _InvoiceBarcodeScannerScreenState();
+  State<ProductBarcodeScannerScreen> createState() =>
+      _ProductBarcodeScannerScreenState();
 }
 
-class _InvoiceBarcodeScannerScreenState
-    extends State<InvoiceBarcodeScannerScreen> {
+class _ProductBarcodeScannerScreenState
+    extends State<ProductBarcodeScannerScreen> {
   static const _catalog = invoiceIssueMockCatalog;
 
   /// The camera area is always dark, whatever the app theme.
@@ -543,7 +543,7 @@ class _CameraErrorView extends StatelessWidget {
     };
 
     return ColoredBox(
-      color: _InvoiceBarcodeScannerScreenState._cameraBackground,
+      color: _ProductBarcodeScannerScreenState._cameraBackground,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -601,7 +601,7 @@ class _CameraIconButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: highlighted
               ? _highlightColor.withValues(alpha: 0.25)
-              : _InvoiceBarcodeScannerScreenState._overlayColor,
+              : _ProductBarcodeScannerScreenState._overlayColor,
           shape: BoxShape.circle,
           border: Border.all(
             color: highlighted
@@ -631,7 +631,7 @@ class _OverlayPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: _InvoiceBarcodeScannerScreenState._overlayColor,
+        color: _ProductBarcodeScannerScreenState._overlayColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
       ),
@@ -680,7 +680,7 @@ class _OverlayButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
-          color: _InvoiceBarcodeScannerScreenState._overlayColor,
+          color: _ProductBarcodeScannerScreenState._overlayColor,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
         ),

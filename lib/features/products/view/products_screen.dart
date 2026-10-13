@@ -117,7 +117,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ProductsHeader(
                     subtitle: 'مدیریت موجودی سوپرمارکت',
                     onScanTap: () => context.pushNamed(
-                      AppRoute.invoiceBarcodeScanner.name,
+                      AppRoute.productBarcodeScanner.name,
                     ),
                   ),
                   const Gap(16),

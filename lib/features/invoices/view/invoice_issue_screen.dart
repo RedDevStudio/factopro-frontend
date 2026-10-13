@@ -113,7 +113,7 @@ class _InvoiceIssueScreenState extends State<InvoiceIssueScreen> {
   /// on it are summed.
   Future<void> _openBarcodeScanner() async {
     final scanned = await context.pushNamed<List<InvoiceIssueItemData>>(
-      AppRoute.invoiceBarcodeScanner.name,
+      AppRoute.productBarcodeScanner.name,
     );
     if (scanned == null || !mounted) return;
     setState(() => _items = mergeInvoiceIssueItems(_items, scanned));
