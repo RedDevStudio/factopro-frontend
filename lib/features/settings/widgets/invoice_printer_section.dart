@@ -1,4 +1,5 @@
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:factopro/features/settings/bloc/settings_models.dart';
 import 'package:factopro/features/settings/widgets/settings_option_chip.dart';
 import 'package:factopro/features/settings/widgets/settings_section_card.dart';
@@ -164,6 +165,7 @@ class InvoicePrinterSection extends StatelessWidget {
           const Gap(8),
           TextField(
             controller: preprintNoteController,
+            inputFormatters: const [PersianDigitsInputFormatter()],
             maxLines: 3,
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.right,

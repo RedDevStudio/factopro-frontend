@@ -1,5 +1,6 @@
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/core/utils/extensions/number_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -87,6 +88,7 @@ class _OtpCodeInputState extends State<OtpCodeInput> {
                     enableInteractiveSelection: false,
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp('[0-9۰-۹٠-٩]')),
+                      PersianDigitsInputFormatter(),
                     ],
                     decoration: const InputDecoration(
                       counterText: '',

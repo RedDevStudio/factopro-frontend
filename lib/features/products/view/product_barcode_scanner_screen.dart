@@ -2,6 +2,7 @@ import 'package:factopro/core/common_widgets/primary_button.dart';
 import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:factopro/core/utils/extensions/number_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:factopro/features/invoices/widgets/invoice_amount_text.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_data.dart';
 import 'package:factopro/features/invoices/widgets/invoice_scanner_item_card.dart';
@@ -780,6 +781,7 @@ class _ManualBarcodeDialogState extends State<_ManualBarcodeDialog> {
         title: const Text('ورود دستی بارکد', style: TextStyle(fontSize: 16)),
         content: TextField(
           controller: _controller,
+          inputFormatters: const [PersianDigitsInputFormatter()],
           autofocus: true,
           keyboardType: TextInputType.number,
           textDirection: TextDirection.ltr,

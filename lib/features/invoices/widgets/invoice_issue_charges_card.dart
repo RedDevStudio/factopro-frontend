@@ -1,4 +1,5 @@
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_data.dart';
 import 'package:factopro/features/products/widgets/edit_product_section_card.dart';
 import 'package:factopro/features/products/widgets/edit_product_text_field.dart';
@@ -80,6 +81,7 @@ class InvoiceIssueChargesCard extends StatelessWidget {
           const Gap(8),
           TextField(
             controller: discountController,
+            inputFormatters: const [PersianDigitsInputFormatter()],
             keyboardType: isCode ? TextInputType.text : TextInputType.number,
             textDirection: isCode ? TextDirection.ltr : null,
             textAlign: isCode ? TextAlign.right : TextAlign.start,

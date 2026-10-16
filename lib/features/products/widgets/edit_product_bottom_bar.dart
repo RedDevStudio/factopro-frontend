@@ -4,10 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 /// Fixed bottom bar of the edit product screen: "انصراف" (cancel) on the
-/// start (right) side, the wider "ذخیره تغییرات محصول" (save) button on the
+/// start (right) side, the wider [saveLabel] button on the
 /// end (left) side. Expects an RTL [Directionality] ancestor.
 class EditProductBottomBar extends StatelessWidget {
-  const EditProductBottomBar({super.key, this.onCancelTap, this.onSaveTap});
+  const EditProductBottomBar({
+    super.key,
+    this.saveLabel = 'ذخیره تغییرات محصول',
+    this.onCancelTap,
+    this.onSaveTap,
+  });
+
+  final String saveLabel;
 
   final VoidCallback? onCancelTap;
   final VoidCallback? onSaveTap;
@@ -53,7 +60,7 @@ class EditProductBottomBar extends StatelessWidget {
                 flex: 2,
                 child: PrimaryButton(
                   onTap: onSaveTap ?? () {},
-                  labelText: 'ذخیره تغییرات محصول',
+                  labelText: saveLabel,
                   labelFontSize: 14,
                   icon: Icons.save_as_outlined,
                   backgroundColor: isDark

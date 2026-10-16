@@ -1,4 +1,5 @@
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -126,6 +127,7 @@ class EditProductTextField extends StatelessWidget {
         const Gap(8),
         TextField(
           controller: controller,
+          inputFormatters: const [PersianDigitsInputFormatter()],
           readOnly: readOnly,
           onTap: onTap,
           keyboardType: keyboardType,

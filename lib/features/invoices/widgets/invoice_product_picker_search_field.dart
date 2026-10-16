@@ -1,4 +1,5 @@
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:flutter/material.dart';
 
 /// Product search box: search icon on the start (right) side, barcode scan
@@ -25,6 +26,7 @@ class InvoiceProductPickerSearchField extends StatelessWidget {
 
     return TextField(
       controller: controller,
+      inputFormatters: const [PersianDigitsInputFormatter()],
       textInputAction: TextInputAction.search,
       style: TextStyle(fontSize: 13, color: colorScheme.onSurface),
       decoration: InputDecoration(

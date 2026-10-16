@@ -21,7 +21,8 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   late final TextEditingController _searchController;
   late ProductCategoryData _selectedCategory;
-  late List<bool> _activeStates;
+  late final List<ProductCardData> _products;
+  late final List<bool> _activeStates;
 
   static const _categories = [
     ProductCategoryData(label: 'همه', count: '۲۴'),
@@ -30,7 +31,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     ProductCategoryData(label: 'کنسرو و آماده'),
   ];
 
-  static const _products = [
+  static const _initialProducts = [
     ProductCardData(
       name: 'روغن آفتابگردان 1.5 لیتری بهار',
       categoryLabel: 'روغن و چربی‌ها',
@@ -89,13 +90,34 @@ class _ProductsScreenState extends State<ProductsScreen> {
     super.initState();
     _searchController = TextEditingController();
     _selectedCategory = _categories.first;
-    _activeStates = List.filled(_products.length, true);
+    _products = [..._initialProducts];
+    _activeStates = List.filled(_products.length, true, growable: true);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _addProduct() async {
+    final product = await context.pushNamed<ProductCardData>(
+      AppRoute.editProduct.name,
+    );
+    if (product == null || !mounted) return;
+    setState(() {
+      _products.insert(0, product);
+      _activeStates.insert(0, true);
+    });
+  }
+
+  Future<void> _editProduct(int index) async {
+    final product = await context.pushNamed<ProductCardData>(
+      AppRoute.editProduct.name,
+      extra: _products[index],
+    );
+    if (product == null || !mounted) return;
+    setState(() => _products[index] = product);
   }
 
   @override
@@ -116,9 +138,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 children: [
                   ProductsHeader(
                     subtitle: 'مدیریت موجودی سوپرمارکت',
-                    onScanTap: () => context.pushNamed(
-                      AppRoute.productBarcodeScanner.name,
-                    ),
+                    onScanTap: () =>
+                        context.pushNamed(AppRoute.productBarcodeScanner.name),
                   ),
                   const Gap(16),
                   ProductsToolbar(searchController: _searchController),
@@ -126,7 +147,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ProductsCategoryChips(
                     categories: _categories,
                     selected: _selectedCategory,
-                    onSelected: (category) => setState(() => _selectedCategory = category),
+                    onSelected: (category) =>
+                        setState(() => _selectedCategory = category),
                   ),
                   const Gap(12),
                   const ProductsStatsRow(
@@ -139,16 +161,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     ProductCard(
                       product: _products[i],
                       isActive: _activeStates[i],
-                      onActiveChanged: (value) => setState(() => _activeStates[i] = value),
-                      onEditTap: () => context.pushNamed(
-                        AppRoute.editProduct.name,
+                      onActiveChanged: (value) =>
+                          setState(() => _activeStates[i] = value),
+                      onEditTap: () => _editProduct(i),
+                      onTap: () => context.pushNamed(
+                        AppRoute.productDetails.name,
                         extra: _products[i],
                       ),
                     ),
                     if (i != _products.length - 1) const Gap(12),
                   ],
                   const Gap(20),
-                  const ProductsBottomBar(),
+                  ProductsBottomBar(onAddProductTap: _addProduct),
                   const Gap(16),
                 ],
               ),

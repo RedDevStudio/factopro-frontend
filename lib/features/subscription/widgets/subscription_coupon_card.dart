@@ -1,5 +1,6 @@
 import 'package:factopro/core/common_widgets/primary_button.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:factopro/features/subscription/widgets/subscription_colors.dart';
 import 'package:factopro/features/subscription/widgets/subscription_section_card.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class SubscriptionCouponCard extends StatelessWidget {
                   height: _fieldHeight,
                   child: TextField(
                     controller: controller,
+                    inputFormatters: const [PersianDigitsInputFormatter()],
                     textDirection: TextDirection.ltr,
                     textAlign: TextAlign.right,
                     textCapitalization: TextCapitalization.characters,

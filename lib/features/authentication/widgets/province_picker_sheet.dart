@@ -1,5 +1,6 @@
 import 'package:factopro/core/constants/iran_provinces.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/formatters/persian_digits_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -98,6 +99,7 @@ class _ProvincePickerSheetState extends State<_ProvincePickerSheet> {
                     const Gap(12),
                     TextField(
                       controller: _searchController,
+                      inputFormatters: const [PersianDigitsInputFormatter()],
                       style: TextStyle(color: colorScheme.onSurface),
                       decoration: InputDecoration(
                         isDense: true,

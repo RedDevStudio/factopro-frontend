@@ -2,10 +2,17 @@ import 'package:factopro/core/utils/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 /// Pinned top bar of the edit product screen: back chevron on the start
-/// (right) side, centered "فرم محصول" title, profile avatar on the end (left)
+/// (right) side, centered [title], profile avatar on the end (left)
 /// side. Expects an RTL [Directionality] ancestor.
 class EditProductHeader extends StatelessWidget {
-  const EditProductHeader({super.key, this.onBackTap, this.onAvatarTap});
+  const EditProductHeader({
+    super.key,
+    this.title = 'فرم محصول',
+    this.onBackTap,
+    this.onAvatarTap,
+  });
+
+  final String title;
 
   final VoidCallback? onBackTap;
   final VoidCallback? onAvatarTap;
@@ -39,7 +46,7 @@ class EditProductHeader extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'فرم محصول',
+              title,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,

@@ -1,5 +1,6 @@
 import 'package:factopro/core/routing/app_router.dart';
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/extensions/number_extension.dart';
 import 'package:factopro/features/invoices/widgets/invoice_issue_data.dart';
 import 'package:factopro/features/invoices/widgets/invoice_product_picker_bottom_bar.dart';
 import 'package:factopro/features/invoices/widgets/invoice_product_picker_card.dart';
@@ -53,14 +54,15 @@ class _InvoiceProductPickerScreenState
   }
 
   List<InvoiceIssueProductData> get _visibleProducts {
-    final query = _searchController.text.trim().toLowerCase();
+    final query = _searchController.text.trim().toLowerCase().toLatinDigits();
     return [
       for (final product in _catalog)
         if ((_selectedCategory == null ||
                 product.categoryLabel == _selectedCategory) &&
             (query.isEmpty ||
-                product.name.toLowerCase().contains(query) ||
-                product.code.toLowerCase().contains(query)))
+                product.name.toLowerCase().toLatinDigits().contains(query) ||
+                product.code.toLowerCase().toLatinDigits().contains(query) ||
+                product.barcode.contains(query)))
           product,
     ];
   }

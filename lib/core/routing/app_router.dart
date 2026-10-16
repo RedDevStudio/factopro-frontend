@@ -34,6 +34,7 @@ enum AppRoute {
   dashboard,
   notifications,
   editProduct,
+  productDetails,
   subscription,
   subscriptionPaymentSuccess,
   subscriptionPaymentHistory,
@@ -82,6 +83,14 @@ final router = GoRouter(
       name: AppRoute.editProduct.name,
       builder: (context, state) =>
           EditProductScreen(product: state.extra as ProductCardData?),
+    ),
+    GoRoute(
+      path: '/product-details',
+      name: AppRoute.productDetails.name,
+      builder: (context, state) => EditProductScreen(
+        product: state.extra as ProductCardData?,
+        readOnly: true,
+      ),
     ),
     GoRoute(
       path: '/subscription',

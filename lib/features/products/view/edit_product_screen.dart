@@ -1,4 +1,5 @@
 import 'package:factopro/core/utils/extensions/context_extension.dart';
+import 'package:factopro/core/utils/extensions/number_extension.dart';
 import 'package:factopro/features/products/widgets/edit_product_authenticity_card.dart';
 import 'package:factopro/features/products/widgets/edit_product_bottom_bar.dart';
 import 'package:factopro/features/products/widgets/edit_product_discount_section.dart';
@@ -15,13 +16,20 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-/// UI-only product edit form. When opened from a product card, the card's
-/// [product] pre-fills the fields it has (name, category, code, price); the
-/// rest is static mock data.
+/// UI-only product form, used both to add and to edit a product.
+///
+/// When opened from a product card, the card's [product] pre-fills the fields
+/// it has (name, category, code, price) and the rest is static mock data.
+/// Without a [product] the form starts empty for adding a new one. Saving pops
+/// the resulting [ProductCardData]. With [readOnly] the form only shows the
+/// product's details: nothing can be changed and there is no save bar.
 class EditProductScreen extends StatefulWidget {
-  const EditProductScreen({super.key, this.product});
+  const EditProductScreen({super.key, this.product, this.readOnly = false});
 
   final ProductCardData? product;
+
+  /// Shows the product without letting the user change anything.
+  final bool readOnly;
 
   @override
   State<EditProductScreen> createState() => _EditProductScreenState();
@@ -44,6 +52,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   static const _lowStockThreshold = 5;
 
+  /// Matches a Jalali date such as "۱۴۰۴/۰۴/۰۸".
+  static final _expiryDatePattern = RegExp(r'[۰-۹]{4}/[۰-۹]{2}/[۰-۹]{2}');
+
   late final TextEditingController _nameController;
   late final TextEditingController _codeController;
   late final TextEditingController _barcodeController;
@@ -60,31 +71,54 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late String _selectedCategory;
   String _selectedExpiryWarning = _expiryWarningOptions.last;
 
-  int _stockCount = 25;
-  bool _isDiscountEnabled = true;
+  late int _stockCount;
+  late bool _isDiscountEnabled;
   EditProductDiscountType _discountType = EditProductDiscountType.percent;
-  bool _isExpiryEnabled = true;
+  late bool _isExpiryEnabled;
+
+  bool get _isNew => widget.product == null;
 
   @override
   void initState() {
     super.initState();
     final product = widget.product;
+    final isNew = product == null;
 
-    _nameController = TextEditingController(
-      text: product?.name ?? 'بسته دان قهوه اسپرسو روبوستا ۱ کیلوگرمی',
+    _nameController = TextEditingController(text: product?.name);
+    _codeController = TextEditingController(text: product?.code);
+    _barcodeController = TextEditingController(
+      text: isNew ? null : '۶۲۶۰۱۹۲۸۴۷۱۹',
     );
-    _codeController = TextEditingController(text: product?.code ?? 'PRD-204');
-    _barcodeController = TextEditingController(text: '626019284719');
     _sellingPriceController = TextEditingController(
-      text: product?.priceValue ?? '۶۵۰,۰۰۰',
+      text: product?.originalPriceValue ?? product?.priceValue,
     );
-    _purchasePriceController = TextEditingController(text: '۴۲۰,۰۰۰');
-    _discountValueController = TextEditingController(text: '۲۰');
-    _finalPriceController = TextEditingController(text: '۵۲۰,۰۰۰');
-    _discountStartController = TextEditingController(text: '۱۴۰۳/۰۸/۰۱');
-    _discountEndController = TextEditingController(text: '۱۴۰۳/۰۸/۱۵');
-    _expiryDateController = TextEditingController(text: '۱۴۰۳/۱۱/۳۰');
-    _batchNumberController = TextEditingController(text: 'LOT - 8842');
+    _purchasePriceController = TextEditingController(
+      text: isNew ? null : '۴۲۰,۰۰۰',
+    );
+    final isDiscounted = product?.originalPriceValue != null;
+    _discountValueController = TextEditingController(
+      text: product?.discountPercentLabel?.replaceAll('٪', ''),
+    );
+    _finalPriceController = TextEditingController(
+      text: isDiscounted ? product!.priceValue : null,
+    );
+    _discountStartController = TextEditingController(
+      text: isNew ? null : '۱۴۰۳/۰۸/۰۱',
+    );
+    _discountEndController = TextEditingController(
+      text: isNew ? null : '۱۴۰۳/۰۸/۱۵',
+    );
+    final expiryDate = product == null
+        ? null
+        : _expiryDatePattern.firstMatch(product.infoLabel)?[0];
+    _expiryDateController = TextEditingController(text: expiryDate);
+    _batchNumberController = TextEditingController(
+      text: isNew ? null : 'LOT - ۸۸۴۲',
+    );
+
+    _stockCount = product?.stockLabel.parseLocalizedInt() ?? (isNew ? 0 : 25);
+    _isDiscountEnabled = isDiscounted;
+    _isExpiryEnabled = expiryDate != null;
 
     final productCategory = product?.categoryLabel;
     _categoryOptions = [
@@ -115,6 +149,72 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (context.canPop()) context.pop();
   }
 
+  /// e.g. "۳۵٪ حاشیه سود", or "—" until both prices are entered.
+  String get _profitMarginLabel {
+    final selling = _sellingPriceController.text.parseLocalizedInt();
+    final purchase = _purchasePriceController.text.parseLocalizedInt();
+    if (selling == null || purchase == null || purchase == 0) {
+      return '— حاشیه سود';
+    }
+    final margin = ((selling - purchase) * 100 / purchase).round();
+    return '${margin.toPersianDigits()}٪ حاشیه سود';
+  }
+
+  void _save() {
+    final name = _nameController.text.trim();
+    final sellingPrice = _sellingPriceController.text.parseLocalizedInt();
+    if (name.isEmpty || sellingPrice == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('نام محصول و قیمت فروش را وارد کنید')),
+      );
+      return;
+    }
+
+    final product = widget.product;
+    final code = _codeController.text.trim();
+    final finalPrice = _finalPriceController.text.parseLocalizedInt();
+    final discountValue = _discountValueController.text.parseLocalizedInt();
+    final isDiscounted =
+        _isDiscountEnabled && finalPrice != null && finalPrice < sellingPrice;
+    final expiryDate = _expiryDateController.text.trim();
+    final hasExpiry = _isExpiryEnabled && expiryDate.isNotEmpty;
+
+    context.pop(
+      ProductCardData(
+        name: name,
+        categoryLabel: _selectedCategory,
+        code: code.isEmpty
+            ? 'PRD-${DateTime.now().millisecondsSinceEpoch % 1000}'
+                  .toPersianDigits()
+            : code,
+        thumbnailIcon: product?.thumbnailIcon ?? Icons.inventory_2_outlined,
+        stockLabel: 'موجودی: ${_stockCount.toPersianDigits()} عدد',
+        isLowStock: _stockCount <= _lowStockThreshold,
+        priceValue: (isDiscounted ? finalPrice : sellingPrice)
+            .toPersianAmount(),
+        originalPriceValue: isDiscounted
+            ? sellingPrice.toPersianAmount()
+            : null,
+        discountPercentLabel:
+            isDiscounted &&
+                _discountType == EditProductDiscountType.percent &&
+                discountValue != null
+            ? '${discountValue.toPersianDigits()}٪'
+            : null,
+        discountRibbonLabel: isDiscounted ? 'تخفیف' : null,
+        infoLabel: hasExpiry
+            ? 'انقضا: $expiryDate'
+            : product?.infoLabel ?? 'کالای جدید',
+        infoIcon: hasExpiry
+            ? Icons.calendar_month_outlined
+            : product?.infoIcon ?? Icons.fiber_new_outlined,
+        infoType: hasExpiry
+            ? ProductInfoType.warning
+            : product?.infoType ?? ProductInfoType.success,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
@@ -124,10 +224,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
       child: Scaffold(
         backgroundColor: colorScheme.outlineVariant,
         body: SafeArea(
-          bottom: false,
+          // Without the bottom bar, keep the form clear of the system inset.
+          bottom: widget.readOnly,
           child: Column(
             children: [
-              EditProductHeader(onBackTap: _close),
+              EditProductHeader(
+                title: widget.readOnly
+                    ? 'جزئیات محصول'
+                    : _isNew
+                    ? 'افزودن محصول جدید'
+                    : 'فرم محصول',
+                onBackTap: _close,
+              ),
               Expanded(
                 child: Align(
                   alignment: Alignment.topCenter,
@@ -140,64 +248,82 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         horizontal: 16,
                         vertical: 14,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const EditProductStatusBar(
-                            statusLabel: 'فعال در انبار',
-                          ),
-                          const Gap(16),
-                          _buildGeneralInfoSection(),
-                          const Gap(16),
-                          EditProductPricingSection(
-                            sellingPriceController: _sellingPriceController,
-                            purchasePriceController: _purchasePriceController,
-                            profitMarginLabel: '۳۵٪ حاشیه سود',
-                            stockCountLabel: _toPersianDigits(_stockCount),
-                            lowStockThresholdLabel:
-                                'آستانه اعلان: ${_toPersianDigits(_lowStockThreshold)} عدد',
-                            onStockIncrement: () =>
-                                setState(() => _stockCount++),
-                            onStockDecrement: _stockCount == 0
-                                ? null
-                                : () => setState(() => _stockCount--),
-                          ),
-                          const Gap(16),
-                          EditProductDiscountSection(
-                            isEnabled: _isDiscountEnabled,
-                            discountType: _discountType,
-                            discountValueController: _discountValueController,
-                            finalPriceController: _finalPriceController,
-                            startDateController: _discountStartController,
-                            endDateController: _discountEndController,
-                            countdownLabel: '۱۲ روز و ۸ ساعت مانده',
-                            onEnabledChanged: (value) =>
-                                setState(() => _isDiscountEnabled = value),
-                            onDiscountTypeChanged: (type) =>
-                                setState(() => _discountType = type),
-                          ),
-                          const Gap(16),
-                          EditProductExpirySection(
-                            isEnabled: _isExpiryEnabled,
-                            expiryDateController: _expiryDateController,
-                            batchNumberController: _batchNumberController,
-                            warningOptions: _expiryWarningOptions,
-                            selectedWarningOption: _selectedExpiryWarning,
-                            onEnabledChanged: (value) =>
-                                setState(() => _isExpiryEnabled = value),
-                            onWarningOptionChanged: (option) =>
-                                setState(() => _selectedExpiryWarning = option),
-                          ),
-                          const Gap(16),
-                          const EditProductAuthenticityCard(),
-                          const Gap(16),
-                        ],
+                      // Blocks taps on every field and control while the
+                      // scroll view itself still scrolls.
+                      child: IgnorePointer(
+                        ignoring: widget.readOnly,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const EditProductStatusBar(
+                              statusLabel: 'فعال در انبار',
+                            ),
+                            const Gap(16),
+                            _buildGeneralInfoSection(),
+                            const Gap(16),
+                            ListenableBuilder(
+                              listenable: Listenable.merge([
+                                _sellingPriceController,
+                                _purchasePriceController,
+                              ]),
+                              builder: (context, _) => EditProductPricingSection(
+                                sellingPriceController: _sellingPriceController,
+                                purchasePriceController:
+                                    _purchasePriceController,
+                                profitMarginLabel: _profitMarginLabel,
+                                stockCountLabel: _toPersianDigits(_stockCount),
+                                lowStockThresholdLabel:
+                                    'آستانه اعلان: ${_toPersianDigits(_lowStockThreshold)} عدد',
+                                onStockIncrement: () =>
+                                    setState(() => _stockCount++),
+                                onStockDecrement: _stockCount == 0
+                                    ? null
+                                    : () => setState(() => _stockCount--),
+                              ),
+                            ),
+                            const Gap(16),
+                            EditProductDiscountSection(
+                              isEnabled: _isDiscountEnabled,
+                              discountType: _discountType,
+                              discountValueController: _discountValueController,
+                              finalPriceController: _finalPriceController,
+                              startDateController: _discountStartController,
+                              endDateController: _discountEndController,
+                              countdownLabel: '۱۲ روز و ۸ ساعت مانده',
+                              onEnabledChanged: (value) =>
+                                  setState(() => _isDiscountEnabled = value),
+                              onDiscountTypeChanged: (type) =>
+                                  setState(() => _discountType = type),
+                            ),
+                            const Gap(16),
+                            EditProductExpirySection(
+                              isEnabled: _isExpiryEnabled,
+                              expiryDateController: _expiryDateController,
+                              batchNumberController: _batchNumberController,
+                              warningOptions: _expiryWarningOptions,
+                              selectedWarningOption: _selectedExpiryWarning,
+                              onEnabledChanged: (value) =>
+                                  setState(() => _isExpiryEnabled = value),
+                              onWarningOptionChanged: (option) => setState(
+                                () => _selectedExpiryWarning = option,
+                              ),
+                            ),
+                            const Gap(16),
+                            const EditProductAuthenticityCard(),
+                            const Gap(16),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              EditProductBottomBar(onCancelTap: _close),
+              if (!widget.readOnly)
+                EditProductBottomBar(
+                  saveLabel: _isNew ? 'ثبت محصول جدید' : 'ذخیره تغییرات محصول',
+                  onCancelTap: _close,
+                  onSaveTap: _save,
+                ),
             ],
           ),
         ),
@@ -220,6 +346,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             label: 'نام محصول',
             controller: _nameController,
             suffixIcon: Icons.edit_note_rounded,
+            hintText: 'مثلا برنج طارم هاشمی ۵ کیلویی',
           ),
           const Gap(14),
           EditProductDropdown(
@@ -238,6 +365,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   label: 'کد انبار داری',
                   controller: _codeController,
                   suffixIcon: Icons.tag_rounded,
+                  hintText: 'خودکار',
                   isLtrValue: true,
                   isBoldValue: true,
                 ),
@@ -248,6 +376,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   label: 'بارکد بین‌المللی',
                   controller: _barcodeController,
                   suffixIcon: Icons.qr_code_2_rounded,
+                  hintText: '۶۲۶...',
                   keyboardType: TextInputType.number,
                   isLtrValue: true,
                 ),
